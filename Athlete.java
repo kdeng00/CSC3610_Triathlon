@@ -21,7 +21,16 @@ public class Athlete
 	private static String lastName;
 	private static String gender;
 	private static String athleteNumber;
+	private static String[][] athletes;
 	
+	public static String[][] getAthletesData()
+	{
+		return athletes;
+	}
+	public static void setAthletesData(String[][] athletes)
+	{
+		Athlete.athletes = athletes;
+	}
 	public static String getFirstName() {
 		return firstName;
 	}
@@ -68,27 +77,36 @@ public class Athlete
 				case 2:
 					System.out.println("Enter 0 for female and 1 for male: ");
 					athletes[i][j] = userInput.nextLine();
-					if (Integer.parseInt(athletes[i][j]) == 0)
+					if (athletes[i][j].equals("0"))
 					{
 						athletes[i][j] = "Female";
 					}
-					else if (Integer.parseInt(athletes[i][j]) == 1)
+					else if (athletes[i][j].equals("1"))
 					{
 						athletes[i][j] = "Male";
 					}
 					else
-						while ((Integer.parseInt(athletes[i][j])) != 0 || (Integer.parseInt(athletes[i][j])) == 1)
+						while ( !athletes[i][j].equals("0")  || !athletes[i][j].equals("1") )
 						{
 							System.out.println("Does not equal to 0 or 1");
 							System.out.println("Try again: ");
 							athletes[i][j] = userInput.nextLine();
 							
-							if (!athletes[i][j].equals("0") || !athletes[i][j].equals("1"))
+							if (athletes[i][j].equals("0"))
+							{
+								athletes[i][j] = "Female";
+								break;
+							}
+							else if (athletes[i][j].equals("1"))
+							{
+								athletes[i][j] = "Male";
+								break;
+							}
+							else if (!athletes[i][j].equals("0") || !athletes[i][j].equals("1"))
 							{
 								athletes[i][j] = ""+(int)(Math.random()*10);
 							}
 						}
-						
 					break;
 				case 3:
 					athletes[i][j] =""+ (i + (int) (Math.random() * 10));
@@ -96,16 +114,30 @@ public class Athlete
 				}
 			}
 		}
+		userInput.close();
+	}
+	public static void print(String athletes[][])
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				System.out.print(athletes[i][j]+" ");
+			}
+			System.out.println();
+		}
 	}
 	public static void main(String[] args)
 	{
-		Scanner userInput = new Scanner(System.in);
+	
 		final int dataEntries = 4;
 		final int numberOfAthletes = 4;
 		
 		String athletes[][] = new String [numberOfAthletes][dataEntries];
 		
 		fillItUp(athletes, numberOfAthletes, dataEntries);
+		
+		print(athletes);
 		
 	}
 }
