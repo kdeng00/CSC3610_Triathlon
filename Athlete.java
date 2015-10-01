@@ -7,7 +7,7 @@ public class Athlete
 	
 	public Athlete()
 	{
-		
+		//something
 	}
 	public Athlete(String firstName, String lastName, String gender, String athleteNumber)
 	{
