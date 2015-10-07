@@ -363,7 +363,15 @@ public class Athlete
 			System.out.println(itStack.next());
 		}
 		
-		
+		/*
+		//Should have give us a sorted arry, but it did not work
+		// the method sort(list<T>, comparator<? super T>) in the type Collection is not aplicable
+		// for the arguments(string[][], stack <Object> )...
+		Collections.sort(test, athletes);
+		     for(String[] counter: test){
+			System.out.println();
+		}
+*/
 		
 		Arrays.sort(test, new Comparator<String[]>() 
 				{
@@ -519,11 +527,11 @@ public class Athlete
 	
 	public static void main(String[] args)
 	{
-	
-		final int dataEntries = 4;
-		final int numberOfAthletes = 4;
+	//Changed finals to capital since they're constants
+		final int DATA_ENTRIES = 4;
+		final int NUMBER_OF_ATHLETES = 4;
 		
-		String athletes[][] = new String [numberOfAthletes][dataEntries];
+		String athletes[][] = new String [NUMBER_OF_ATHLETES][DATA_ENTRIES];
 		
 		//fillItUp(athletes, numberOfAthletes, dataEntries);
 		
