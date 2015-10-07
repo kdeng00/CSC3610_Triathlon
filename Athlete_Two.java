@@ -205,14 +205,14 @@ public class Athlete
 			while (truStory)
 			{
 				gender =  userInput.nextLine();
-				if (gender.equals("Male"))
+				if (gender.equalsIgnoreCase("Male")) //allows upper/lower user input
 				{
 					athleteInfo.add(gender);
 					test[i][3] = gender;
 					//truStory = false;
 					break;
 				}
-				else if (gender.equals("Female"))
+				else if (gender.equalsIgnoreCase("Female")) //allows upper/lower user input
 				{
 					athleteInfo.add(gender);
 					test[i][3] = gender;
