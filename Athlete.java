@@ -251,8 +251,8 @@ public class Athlete
 	{
 		Stack<Object> athletes = new Stack<>();
 		
-		new ArrayList<>();
-		new ArrayList<>();
+		// new ArrayList<>();
+		// new ArrayList<>();
 		Queue<Object> allAthleteQueue = new LinkedList<>();
 		
 		String gender = "";
@@ -297,14 +297,14 @@ public class Athlete
 			while (truStory)
 			{
 				gender =  userInput.nextLine();
-				if (gender.equals("Male"))
+				if (gender.equalsIgnoreCase("Male"))
 				{
 					athleteInfo.add(gender);
 					test[i][3] = gender;
 					//truStory = false;
 					break;
 				}
-				else if (gender.equals("Female"))
+				else if (gender.equalsIgnoreCase("Female"))
 				{
 					athleteInfo.add(gender);
 					test[i][3] = gender;
