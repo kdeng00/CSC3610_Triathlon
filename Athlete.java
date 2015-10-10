@@ -11,8 +11,18 @@ import java.util.Scanner;
 import java.util.Stack;
 import java.util.Queue;
 
-public class Athlete
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
+public class Athlete extends Application
 {
+	public BorderPane rootLayout;
+	public AnchorPane controlData;
+	public Stage primaryStage;
 	
 	public Athlete()
 	{
@@ -393,6 +403,47 @@ public class Athlete
 		//print(athletes);
 		
 		assign(3);
+		launch(args);
+		
+		
+	}
+		@Override
+	public void start(Stage primaryStage) throws Exception {
+		this.primaryStage = primaryStage;
+		this.primaryStage.setTitle("Triatholon Prjoect Demo");
+		
+		initializeRootLayout();
+		showControlsData();
+
+		
+	}
+	private void showControlsData() {
+		FXMLLoader load = new FXMLLoader();
+		load.setLocation(Ares_Athlete.class.getResource("Athlete_Controller.fxml"));
+		
+		try {
+			controlData = (AnchorPane)load.load();
+		}
+		catch(IOException exc) {
+			exc.printStackTrace();
+		}
+		rootLayout.setCenter(controlData);
+	}
+	private void initializeRootLayout() {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Ares_Athlete.class.getResource("RootLayout.fxml"));
+		
+		try {
+			rootLayout = (BorderPane)loader.load();
+		}
+		catch(IOException exc) {
+			exc.printStackTrace();
+		}
+		Scene scn = new Scene(rootLayout);
+		primaryStage.setScene(scn);
+		primaryStage.show();
+	
+		
 		
 	}
 }
