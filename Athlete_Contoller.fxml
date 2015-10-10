@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <ImageView fx:id="imgTriathlon" fitHeight="195.0" fitWidth="403.0" layoutX="99.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" >
+      <image>
+          <Image url="triatholon.jpg" />
+        </image>
+        </ImageView>
+      <Label fx:id="lblWelcome" layoutX="165.0" layoutY="24.0" prefHeight="71.0" prefWidth="302.0" text="WELCOME!" textFill="#00801e">
+         <font>
+            <Font name="Chalkboard SE Regular" size="52.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnEnter" layoutX="341.0" layoutY="381.0" mnemonicParsing="false" text="Enter " textAlignment="JUSTIFY" textFill="#002bff" textOverrun="WORD_ELLIPSIS" />
+      <Label fx:id="lblResults" layoutX="191.0" layoutY="386.0" text="See the Results!" />
+   </children>
+</AnchorPane>
