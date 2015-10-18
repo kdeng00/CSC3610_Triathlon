@@ -346,7 +346,7 @@ public class Athlete extends Application
 			athletes.add(athleteInfo);
 			allAthleteQueue.add(athleteInfo);
 			
-			
+			userInput.close();
 			
 		}
 				
@@ -755,7 +755,7 @@ public class Athlete extends Application
 		int i = 0;
 		//System.out.println(athletesTotalTime.keySet());
 		Set<Integer> array =  athletesTotalTime.keySet();
-		Iterator blah = array.iterator();
+		Iterator<Integer> blah = array.iterator();
 		while (blah.hasNext())
 		{
 			gs[i] = (int) blah.next();
