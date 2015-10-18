@@ -1,7 +1,6 @@
 package tryMe;
 
-import java.util.Map;
-import java.util.SortedMap;
+
 
 public class Swimming
 {
@@ -44,7 +43,6 @@ public class Swimming
 	{
 		generatedTime = (1) + (Math.random()*60);
 		generatedTime = Math.round(generatedTime * 100)/100.0;
-		//System.out.println(generatedTime);
 	}
 	public double randomTime()
 	{
