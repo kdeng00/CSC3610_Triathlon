@@ -748,13 +748,37 @@ public class Athlete extends Application
 		System.out.println(total.keySet());
 		
 	}
-	public static void printAllAthletes(Map<Integer, String> athletesTotalTime)
+	public static void printAllAthletes(Map<Integer, String> athletesTotalTime, Map<Integer, String> firstNames, Map<Integer, String> lastNames, 
+			Map<Integer, String> genders, Map<Integer, String> swimmingTimes, Map<Integer, String> bikingTimes, Map<Integer, String> runningTimes)
 	{
-		System.out.println(athletesTotalTime.keySet());
+		int[] gs = new int[athletesTotalTime.size()];
+		int i = 0;
+		//System.out.println(athletesTotalTime.keySet());
+		Set<Integer> array =  athletesTotalTime.keySet();
+		Iterator blah = array.iterator();
+		while (blah.hasNext())
+		{
+			gs[i] = (int) blah.next();
+			i++;
+		}
+		
+		for (int j = 0; j < (athletesTotalTime.size()); j++)
+		{
+			//System.out.println("Keys: " +gs[j]);
+			
+			System.out.println("First Name: " + firstNames.get(gs[j]) + " Last Name: " + lastNames.get(gs[j]) + " Gender: " + genders.get(gs[j]) + " Swimming: " + 
+			swimmingTimes.get(gs[j]) + " Biking: " + bikingTimes.get(gs[j]) + " Running: " + 
+					runningTimes.get(gs[j]) + " Total: " + athletesTotalTime.get(gs[j]));
+					
+		}
+		
+		/**
+		
 		for (Map.Entry<Integer, String> entry : athletesTotalTime.entrySet()) {
 			System.out.println("[Key] : " + entry.getKey() 
                                       + " [Value] : " + entry.getValue());
 		}
+		*/
 	}
 	
 	public static void main(String[] args)
@@ -840,7 +864,7 @@ public class Athlete extends Application
 		Map<Integer, String> sortedTotal = sortMap(total);
 		//printAllAthletes(swimmingTimes, bikingTimes, runningTimes, total);
 
-		
+		/**
 		List<Map.Entry<Integer, String>> l = new ArrayList<Map.Entry<Integer, String>>(total.entrySet());
 		Collections.sort(l, new Comparator<Object>()
 		{
@@ -854,9 +878,9 @@ public class Athlete extends Application
 				return uno.getValue().compareTo(dos.getValue());
 			}
 		});
+		*/
 		
-		
-		printAllAthletes(sortedTotal);
+		printAllAthletes(sortedTotal, firstNames, lastNames, genders, swimmingTimes, bikingTimes, runningTimes);
 		launch(args);
 		
 	}
