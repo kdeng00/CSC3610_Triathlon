@@ -104,7 +104,6 @@ public class Athlete extends Application
 	public static void setSeconds(double totalMinutes)
 	{
 		double s = (totalMinutes - ((int)totalMinutes)) * 60;
-		
 		seconds = (int)s;
 	}
 	public static int getHours()
@@ -125,7 +124,6 @@ public class Athlete extends Application
 	}
 	public static int getRandomSwimTimeMinute()
 	{
-		
 		return swimTimeMinute;
 	}
 	public static void setRandomSwimTimeSecond()
@@ -134,7 +132,6 @@ public class Athlete extends Application
 	}
 	public static int getRandomSwimTimeSecond()
 	{
-		
 		return swimTimeSecond;
 	}
 	public static void setRandomBikeTimeMinute()
@@ -143,7 +140,6 @@ public class Athlete extends Application
 	}
 	public static int getRandomBikeTimeMinute()
 	{
-		
 		return bikeTimeMinute;
 	}
 	public static void setRandomBikeTimeSecond()
@@ -160,7 +156,6 @@ public class Athlete extends Application
 	}
 	public static int getRandomRunTimeMinute()
 	{
-		
 		return runTimeMinute;
 	}
 	public static void setRandomRunTimeSecond()
@@ -169,7 +164,6 @@ public class Athlete extends Application
 	}
 	public static int getRandomRunTimeSecond()
 	{
-		
 		return runTimeSecond;
 	}
 	public static void setTotalTimeMinute(int minutes, int seconds)
@@ -178,7 +172,6 @@ public class Athlete extends Application
 	}
 	public static int getTotalTimeMinute()
 	{
-		
 		return totalTimeMinute;
 	}
 	public static void setTotalTimeSecond(int seconds)
@@ -187,7 +180,6 @@ public class Athlete extends Application
 	}
 	public static int getTotalTimeSecond()
 	{
-		
 		return totalTimeSecond;
 	}
 	
@@ -266,9 +258,6 @@ public class Athlete extends Application
 	public static void assign(int amountOfAthletes)
 	{
 		Stack<Object> athletes = new Stack<>();
-		
-		// new ArrayList<>();
-		// new ArrayList<>();
 		Queue<Object> allAthleteQueue = new LinkedList<>();
 		
 		String gender = "";
@@ -317,26 +306,21 @@ public class Athlete extends Application
 				{
 					athleteInfo.add(gender);
 					test[i][3] = gender;
-					//truStory = false;
 					break;
 				}
 				else if (gender.equalsIgnoreCase("Female"))
 				{
 					athleteInfo.add(gender);
 					test[i][3] = gender;
-					//truStory = false;
 					break;
 				}
 				else
 					System.out.println("Does not Compute");
 					System.out.println("Try again: ");
-					
 			}
-			
 			athleteNumber = (int) (Math.random()*300);
 			athleteInfo.add(athleteNumber);
 			test[i][4] = ""+athleteNumber;
-			
 				
 			athleteInfo.add(getRandomSwimTimeMinute() + ":" + getRandomSwimTimeSecond());
 			athleteInfo.add(getRandomBikeTimeMinute() + ":" + getRandomBikeTimeSecond());
@@ -347,12 +331,10 @@ public class Athlete extends Application
 			allAthleteQueue.add(athleteInfo);
 			
 			userInput.close();
-			
 		}
 				
 		Iterator<Object> itQueue = allAthleteQueue.iterator();
 		Iterator<Object> itStack = athletes.iterator();
-		
 		
 		System.out.println("Queue Iterator: ");
 		while (itQueue.hasNext())
@@ -365,7 +347,6 @@ public class Athlete extends Application
 		{
 			System.out.println(itStack.next());
 		}
-		
 		
 		for (int j = 0; j < amountOfAthletes; j++)
 		{
@@ -382,7 +363,6 @@ public class Athlete extends Application
 			});
 		}
 			
-		
 		System.out.println("\nString: ");
 		for (String[] ob: test)
 		{
@@ -392,8 +372,16 @@ public class Athlete extends Application
 			System.out.println( getHours()+ ":" + getMinutes() + ":" + getSeconds() + " " + ob[1] + " " + ob[2] + " " + ob[3] + " " + ob[4]);
 		}
 	}
-	
-	
+	/*
+	 * The reason for this method being here is because initially when you initialize an array
+	 * all of the elements are either null or zero depending on the type of the array. In this
+	 * case the array is filled with zereo's. Why is even here you ask. Well the reason is because
+	 * we are checking the array for duplicates and if the array is filled with zero's then that 
+	 * means the array is filled with nothing but duplicates. Randomizing the array gets us to
+	 * a better start. If the array has random numbers then there is a better chance that the
+	 * array does not have any duplicates and if there are less duplicates the program runs
+	 * quicker.
+	 */
 	public static void removingZeros(int[] theArray)
 	{
 		for (int i = 0; i < (theArray.length); i++)
@@ -401,6 +389,7 @@ public class Athlete extends Application
 			theArray[i] = (int)(Math.random()*10);
 		}
 	}
+	//This method populates the Array with random integers that are not already apart of the array.
 	public static void populatingArrayWithNoDuplicates(int[] theArray)
 	{
 		for (int i = 0; i < (theArray.length); i++)
@@ -408,49 +397,47 @@ public class Athlete extends Application
 			theArray[i] = checkingDuplicatesInArray(theArray);
 		}
 	}
+	//This returns a random integer that is not in the array
 	public static int checkingDuplicatesInArray(int[] theArray)
 	{
 		int random;
-		int loopItAgain;
+		int loopItAgain; //determines if there is a duplicate number greater than 0
 		
 		while (true)
-        {
-            random = (int) (Math.random()*20);
-            loopItAgain = 0;
-            for (int i = 0; i < (theArray.length); i++)
-            {
-            	
-            	if (random == theArray[i])
-            	{
-            		loopItAgain++;
-            	}
-            }
-
-            if (loopItAgain == 0)
-            {
-                return random;
-            }
-        }
-	}
+	        {
+	            random = (int) (Math.random()*20);
+	            loopItAgain = 0;
+	            for (int i = 0; i < (theArray.length); i++)
+	            {
+	            	if (random == theArray[i])
+	            	{
+	            		loopItAgain++;
+	            	}
+	            }
 	
+	            if (loopItAgain == 0)
+	            {
+	                return random;
+	            }
+	        }
+	}
+	/* 
+	 * This is the assign method revised. I didn't bother removing the original assign method because it is good to keep
+	 * a history of the what has been used.
+	 * This method just assins the athlete's Data.
+	 * The reason why there are so many arguments foro the method is because all of the maps are being used to assign information
+	 */
 	public static void assignRevised(Map<Integer, String> firstNames, Map<Integer, String> lastNames, Map<Integer, String> genders, 
 			Map<Integer, String> firstNamesMale, Map<Integer, String> lastNamesMale, Map<Integer, String> gendersMale, 
 			Map<Integer, String> firstNamesFemale, Map<Integer, String> lastNamesFemale, Map<Integer, String> gendersFemale, 
 			int amountOfAthletes, int[] athleteNumbers)
 	{
-		/**
-		firstNames = new HashMap<Integer, String>();
-		lastNames = new HashMap<Integer, String>();
-		genders = new HashMap<Integer, String>();
-		firstNamesMale = new HashMap<Integer, String>();
-		lastNamesMale = new HashMap<Integer, String>();
-		gendersMale = new HashMap<Integer, String>();
-		firstNamesFemale = new HashMap<Integer, String>();
-		lastNamesFemale = new HashMap<Integer, String>();
-		gendersFemale = new HashMap<Integer, String>();
-		*/
 		Scanner userInput = new Scanner(System.in);
-		String firstName = "";
+		/*
+		 * Creating local variables within this method to make things easier instead of creating an instance of
+		 * an object and using the the set method to set and the method to get then set the
+		 */
+		String firstName = ""; 
 		String lastName = "";
 		String gender = "";
 		int athleteNumber;
