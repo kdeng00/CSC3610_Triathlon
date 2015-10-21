@@ -730,17 +730,18 @@ public class Athlete extends Application
 	public static void printAllAthletes(Map<Integer, String> athletesTotalTime, Map<Integer, String> firstNames, Map<Integer, String> lastNames, 
 			Map<Integer, String> genders, Map<Integer, String> swimmingTimes, Map<Integer, String> bikingTimes, Map<Integer, String> runningTimes)
 	{
-		int[] gs = new int[athletesTotalTime.size()];
-		int i = 0;
+		int[] gs = new int[athletesTotalTime.size()]; //Initializes an Array
+		int i = 0; //index variable
 	
-		Set<Integer> array =  athletesTotalTime.keySet();
-		Iterator<Integer> blah = array.iterator();
+		Set<Integer> array =  athletesTotalTime.keySet(); //Assigns the keySet of the athlete's total time to a Set
+		Iterator<Integer> blah = array.iterator(); //An Iterator of the array with the ordered keys
+		//Iterates through the Iterator and assigns/dump the values to the array
 		while (blah.hasNext())
 		{
 			gs[i] = (int) blah.next();
 			i++;
 		}
-		
+		//Prints the data, all of it.
 		for (int j = 0; j < (athletesTotalTime.size()); j++)
 		{
 			
@@ -753,19 +754,18 @@ public class Athlete extends Application
 	
 	public static void main(String[] args)
 	{
-	
-		//final int dataEntries = 4;
-		//final int numberOfAthletes = 4;
+		int amountOfAthletes = 3; //You can change the amount of athletes here.
+		int[] athleteNumbers = new int[amountOfAthletes]; //Empty athlete numbers
 		
-		int amountOfAthletes =3;
-		int[] athleteNumbers = new int[amountOfAthletes];
-		
+		//Creating Map Objects
 		Map<Integer, String> firstNames, lastNames, genders, firstNamesMale, lastNamesMale, 
 		gendersMale, firstNamesFemale, lastNamesFemale, gendersFemale; 
 		Map<Integer, String> swimmingTimes, swimmingTimesMale, 
 		swimmingTimesFemale, bikingTimes, bikingTimesMale, bikingTimesFemale, runningTimes, runningTimesMale, 
 		runningTimesFemale, total, totalMales, totalFemales;
 		
+		//Initializing the Maps of the <Integer, String type because the athlete number is an integer
+		//and the value is a String - time and Disqualification
 		firstNames = new HashMap<Integer, String>();
 		lastNames = new HashMap<Integer, String>();
 		genders = new HashMap<Integer, String>();
@@ -794,45 +794,56 @@ public class Athlete extends Application
 		totalMales = new HashMap<Integer, String>();
 		totalFemales = new HashMap<Integer, String>();
 		
+		//Old
 		//fillItUp(athletes, numberOfAthletes, dataEntries);
-		
+		//Old
 		//print(athletes);
 		
+		//Old assign method
 		//assign(3);
-		removingZeros(athleteNumbers);
-		populatingArrayWithNoDuplicates(athleteNumbers);
+		removingZeros(athleteNumbers); //Removes the zeros of the array
+		populatingArrayWithNoDuplicates(athleteNumbers); //Populate the array with random numbers
+		
+		//Used for debugging, just to print the array
 		//forEach(athleteNumbers);
+		//Invoking the assignRevised method
 		assignRevised(firstNames, lastNames, genders, firstNamesMale, lastNamesMale, gendersMale, 
 				firstNamesFemale, lastNamesFemale, gendersFemale, amountOfAthletes, athleteNumbers);
 		System.out.println("Swim: ");
+		//Invoiking the swimStuff method
 		swimStuff(firstNames, lastNames, genders, firstNamesMale, lastNamesMale, gendersMale, 
 				firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimes, swimmingTimesMale, 
 				swimmingTimesFemale, bikingTimes, bikingTimesMale, bikingTimesFemale, runningTimes, 
 				runningTimesMale, runningTimesFemale, total, totalFemales, totalMales, amountOfAthletes, 
 				athleteNumbers);
 		System.out.println("Bike: ");
+		//Invoiking the bikeStuff method
 		bikeStuff(firstNames, lastNames, genders, firstNamesMale, lastNamesMale, gendersMale, 
 				firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimes, swimmingTimesMale, 
 				swimmingTimesFemale, bikingTimes, bikingTimesMale, bikingTimesFemale, runningTimes, 
 				runningTimesMale, runningTimesFemale, total, totalFemales, totalMales, amountOfAthletes, 
 				athleteNumbers);
 		System.out.println("Run: ");
+		//Invoking the runStuff method
 		runStuff(firstNames, lastNames, genders, firstNamesMale, lastNamesMale, gendersMale, 
 				firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimes, swimmingTimesMale, 
 				swimmingTimesFemale, bikingTimes, bikingTimesMale, bikingTimesFemale, runningTimes, 
 				runningTimesMale, runningTimesFemale, total, totalFemales, totalMales, amountOfAthletes, 
 				athleteNumbers);
 		System.out.println("Total: ");
+		//Invoking the totalStuff method
 		totalStuff(firstNames, lastNames, genders, firstNamesMale, lastNamesMale, gendersMale, 
 				firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimes, swimmingTimesMale, 
 				swimmingTimesFemale, bikingTimes, bikingTimesMale, bikingTimesFemale, runningTimes, 
 				runningTimesMale, runningTimesFemale, total, totalFemales, totalMales, amountOfAthletes, 
 				athleteNumbers);
 		
+		//Debugging stuff
 		//printAllAthletes(swimmingTimes, bikingTimes, runningTimes, total);
 		//System.out.println(firstNames.values());
+		
+		//Created a Map with the sorted times
 		Map<Integer, String> sortedTotal = sortMap(total);
-		//printAllAthletes(swimmingTimes, bikingTimes, runningTimes, total);
 
 		/**
 		List<Map.Entry<Integer, String>> l = new ArrayList<Map.Entry<Integer, String>>(total.entrySet());
@@ -852,30 +863,47 @@ public class Athlete extends Application
 		
 		printAllAthletes(sortedTotal, firstNames, lastNames, genders, swimmingTimes, bikingTimes, runningTimes);
 		launch(args);
-		
 	}
 
 	private static Map<Integer, String> sortMap(Map<Integer, String> unsorted)
 	{
-		List<Map.Entry<Integer, String>> list = new LinkedList<Map.Entry<Integer, String>>(unsorted.entrySet());
+		/*
+		 * Changed the List type to an ArrayList because the LinkedList was not needed.
+		 * To sort the information first the data needs to be transferred to something that can
+		 * be sorted. That's why List is being used
+		 */
+		List<Map.Entry<Integer, String>> list = new ArrayList<Map.Entry<Integer, String>>(unsorted.entrySet());
 		
+		//Sorts the the List
 		Collections.sort(list, new Comparator<Map.Entry<Integer, String>>() 
 				{
+					/*
+					 * If the first Map object is greater than the second Map than 
+					 * it returns a 1, if the first Map object is less than the second
+					 * Map then it returns a negative 1. If they are both equal then it
+					 * it will return a 0
+					 */
 					@Override
 					public int compare(Map.Entry<Integer, String> one, Map.Entry<Integer, String> two)
 					{
 						return (one.getValue()).compareTo(two.getValue());
 					}
 				});
-		Map<Integer, String> sorted = new LinkedHashMap<Integer, String>();
+		Map<Integer, String> sorted = new HashMap<Integer, String>();
+		/*
+		 * Iterates through the sorted List and assigns/dumps it in a Map then it gets put
+		 * into the sorted Map
+		 */
 		for (Iterator<Map.Entry<Integer, String>> it = list.iterator(); it.hasNext();) 
 		{
 			Map.Entry<Integer, String> entry = it.next();
 			sorted.put(entry.getKey(), entry.getValue());
 		}
+		//Once that is finished it returns the sorted Map
 		return sorted;
 	}
 	
+	//To go through an integer array
 	public static void forEach(int[] ar)
 	{
 		for (Object ob: ar)
