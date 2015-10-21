@@ -434,8 +434,7 @@ public class Athlete extends Application
 	{
 		Scanner userInput = new Scanner(System.in);
 		/*
-		 * Creating local variables within this method to make things easier instead of creating an instance of
-		 * an object and using the the set method to set and the method to get then set the
+		 * 
 		 */
 		String firstName = ""; 
 		String lastName = "";
@@ -444,6 +443,7 @@ public class Athlete extends Application
 		
 		for (int i = 0; i < amountOfAthletes; i++)
 		{
+			//Athlete Object to store Athlete Information and assign it within the loop
 			Athlete athleteInformation = new Athlete();
 			
 			System.out.println("Enter First Name of the Athlete: ");
@@ -454,6 +454,9 @@ public class Athlete extends Application
 			lastName = userInput.nextLine();
 			athleteInformation.setLastName(lastName);
 			
+			/*
+			 * The gender determines whether or not which Map the athlete goes into
+			 */
 			System.out.println("Enter Male for Male and Female for Female: ");
 			while (true)
 			{
@@ -471,16 +474,17 @@ public class Athlete extends Application
 				else
 					System.out.println("Try again: ");
 			}
-			athleteNumber = athleteNumbers[i];
-			athleteInformation.setAthleteNumber(""+athleteNumber);
+			athleteNumber = athleteNumbers[i]; //Assigns an athleteNumber
+			athleteInformation.setAthleteNumber(""+athleteNumber); //Concatenates the int to a String
 			
-			if (gender.equals("Male") || gender.equals("male"))
+			//Assigns the athletes to their corresponding Maps
+			if (gender.equals("Male") || gender.equals("male")
 			{
-				firstNamesMale.put(athleteNumbers[i], firstName);
-				lastNamesMale.put(athleteNumbers[i], lastName);
-				gendersMale.put(athleteNumbers[i], gender);
+				firstNamesMale.put(athleteNumbers[i], athleteInformation.getFirstName);
+				lastNamesMale.put(athleteNumbers[i], athleteInformation.getLastName);
+				gendersMale.put(athleteNumbers[i], athleteInformation.getGender);
 			}
-			else if (gender.equals("Female") || gender.equals("females"))
+			else if (gender.equals("Female") || gender.equals("female"))
 			{
 				firstNamesFemale.put(athleteNumbers[i], firstName);
 				lastNamesFemale.put(athleteNumbers[i], lastName);
@@ -492,6 +496,10 @@ public class Athlete extends Application
 		}
 		userInput.close();
 	}
+	/*
+	 * This method takes all the Maps and adds the swimming times to the maps. If the times exceed 60 then it will
+	 * Disqualify the athlete's time for the other times. That's why there are other events in this method.
+	 */
 	public static void swimStuff(Map<Integer, String> firstNames, Map<Integer, String> lastNames, Map<Integer, String> genders, 
 			Map<Integer, String> firstNamesMale, Map<Integer, String> lastNamesMale, Map<Integer, String> gendersMale, 
 			Map<Integer, String> firstNamesFemale, Map<Integer, String> lastNamesFemale, Map<Integer, String> gendersFemale, 
@@ -501,40 +509,46 @@ public class Athlete extends Application
 			Map<Integer, String> total, Map<Integer, String> totalMales, Map<Integer, String> totalFemales, 
 			int amountOfAthletes, int[] athleteNumbers)
 	{
-		Swimming times = new Swimming();
-		
+		Swimming times = new Swimming(); //Instance of the swimming class to store data
+		//The loop only does three loops because there are only three athletes. You can change the amount of 
+		//Athletes in the main method
 		for (int i = 0; i < amountOfAthletes; i++)
 		{
-			times.generateRandomTime();
-			if (times.randomTime() > 60)
+			times.generateRandomTime(); //Generates a random time but does not return it
+			if (times.randomTime() >= 60) //Checks to see if the random time is greater than 60 minutes... Changed it to equal to or greater than
 			{
+				//Disqualifies athlete's other times
 				swimmingTimes.put(athleteNumbers[i], "Disqualified");
 				bikingTimes.put(athleteNumbers[i], "Disqualified");
 				runningTimes.put(athleteNumbers[i], "Disqualified");
 				total.put(athleteNumbers[i], "Disqualified");
 			}
-			else
+			else //If not greater than 60 than it assigns the time to the Map
 			{
 				swimmingTimes.put(athleteNumbers[i], ""+times.randomTime());
 				System.out.println("Time: "+swimmingTimes.get(athleteNumbers[i]));
 			}
-			
-			if (gendersMale.containsKey(athleteNumbers[i]) && times.randomTime() < 60)
+			/*
+			 * The reason why this if statement is not an else-if statement and continuing from the
+			 * last statement because this assigns information to the gender-specific Maps
+			 * Essentially repeating the last step but for the specific Maps
+			 */
+			if (gendersMale.containsKey(athleteNumbers[i]) && times.randomTime() < 60) //The containsKey method checks the key if it's available
 			{
-				swimmingTimesMale.put(athleteNumbers[i], ""+times.randomTime());
+				swimmingTimesMale.put(athleteNumbers[i], ""+times.randomTime()); //Assigns the data
 			}
-			else if (gendersMale.containsKey(athleteNumbers[i]) && times.randomTime() > 60)
+			else if (gendersMale.containsKey(athleteNumbers[i]) && times.randomTime() >= 60) //Disqualifies Athlete
 			{
 				swimmingTimesMale.put(athleteNumbers[i], "Disqualified");
 				bikingTimesMale.put(athleteNumbers[i], "Disqualified");
 				runningTimesMale.put(athleteNumbers[i], "Disqualified");
 				totalMales.put(athleteNumbers[i], "Disqualified");
 			}
-			else if (gendersFemale.containsKey(athleteNumbers[i]) && times.randomTime() < 60)
+			else if (gendersFemale.containsKey(athleteNumbers[i]) && times.randomTime() < 60) //Repeat of the beginning if Statement
 			{
 				swimmingTimesFemale.put(athleteNumbers[i], ""+times.randomTime());
 			}
-			else if (gendersFemale.containsKey(athleteNumbers[i]) && times.randomTime() > 60)
+			else if (gendersFemale.containsKey(athleteNumbers[i]) && times.randomTime() >= 60) //Repeat of the previous statment
 			{
 				swimmingTimesFemale.put(athleteNumbers[i], "Disqualified");
 				bikingTimesFemale.put(athleteNumbers[i], "Disqualified");
@@ -543,6 +557,10 @@ public class Athlete extends Application
 			}
 		}
 	}
+	/*
+	 * A repeat of the previous Method, the only difference is that it checks to see if the Athlete is already
+	 * disqualified and repeats the statements from the previous method
+	 */
 	public static void bikeStuff(Map<Integer, String> firstNames, Map<Integer, String> lastNames, Map<Integer, String> genders, 
 			Map<Integer, String> firstNamesMale, Map<Integer, String> lastNamesMale, Map<Integer, String> gendersMale, 
 			Map<Integer, String> firstNamesFemale, Map<Integer, String> lastNamesFemale, Map<Integer, String> gendersFemale, 
@@ -552,30 +570,36 @@ public class Athlete extends Application
 			Map<Integer, String> total, Map<Integer, String> totalMales, Map<Integer, String> totalFemales, 
 			int amountOfAthletes, int[] athleteNumbers)
 	{
-		Biking times = new Biking();
+		Biking times = new Biking(); //Biking object
 		for (int i = 0; i < amountOfAthletes; i++)
 		{
-			times.generateRandomTime();
+			times.generateRandomTime(); //Generates random time but does not return anything
 			
-			//System.out.println(bikingTimes.get(athleteNumbers[i]));
-			if (swimmingTimes.get(athleteNumbers[i]).equals("Disqualified"))
+			if (swimmingTimes.get(athleteNumbers[i]).equals("Disqualified")) //Checks to see if they are already disqualified
 			{
-				System.out.println(bikingTimes.get(athleteNumbers[i]));
+				System.out.println(bikingTimes.get(athleteNumbers[i])); //This statement can be removed, I only used it for debugging
+				//If the athlete is disqualified then it moves on to the next Athlete
 			}
-			else
+			else //If the athlete is not disqualified then it adds data
 			{
-				if (times.randomTime() > 60)
+				if (times.randomTime() >= 60) //Checks if the generated time is greater or equal to 60
 				{
+					//If greater then it disqualifies the athlete
 					bikingTimes.put(athleteNumbers[i], "Disqualified");
 					runningTimes.put(athleteNumbers[i], "Disqualified");
 					total.put(athleteNumbers[i], "Disqualified");
 				}
-				else
+				else //If not then it assigns the athlete data
 				{
 					bikingTimes.put(athleteNumbers[i], ""+times.randomTime());
 					System.out.println("Time: "+bikingTimes.get(athleteNumbers[i]));
 				}
 				
+				/*
+				 * Gender-specific time assigning, nothing new here except for:
+				 * does not disqualify the athlete for swimming because the swimming
+				 * event is before the biking event. Swimming is outside of the scope.
+				 */
 				if (gendersMale.containsKey(athleteNumbers[i]) && times.randomTime() < 60)
 				{
 					bikingTimesMale.put(athleteNumbers[i], ""+times.randomTime());
@@ -596,17 +620,10 @@ public class Athlete extends Application
 					runningTimesFemale.put(athleteNumbers[i], "Disqualified");
 					totalFemales.put(athleteNumbers[i], "Disqualified");
 				}
-				
-				//bikingTimes.put(athleteNumbers[i], ""+times.randomTime());
-				//System.out.println("Not Disqualified: "+bikingTimes.get(athleteNumbers[i]));
 			}
-			
-			//bikingTimes.put(athleteNumbers[i], ""+times.randomTime());
-			//System.out.println("end: ");
-			//System.out.println(swimmingTimes.get(athleteNumbers[i]));
 		}
-		//System.out.println("\nReal end");
 	}
+	//Same method with some slight changes 
 	public static void runStuff(Map<Integer, String> firstNames, Map<Integer, String> lastNames, Map<Integer, String> genders, 
 			Map<Integer, String> firstNamesMale, Map<Integer, String> lastNamesMale, Map<Integer, String> gendersMale, 
 			Map<Integer, String> firstNamesFemale, Map<Integer, String> lastNamesFemale, Map<Integer, String> gendersFemale, 
@@ -616,19 +633,18 @@ public class Athlete extends Application
 			Map<Integer, String> total, Map<Integer, String> totalMales, Map<Integer, String> totalFemales, 
 			int amountOfAthletes, int[] athleteNumbers)
 	{
-		Running times = new Running();
+		Running times = new Running(); //Running object
 		for (int i = 0; i < amountOfAthletes; i++)
 		{
-			times.generateRandomTime();
+			times.generateRandomTime(); //Generates but does not return anything
 			
-			//System.out.println(bikingTimes.get(athleteNumbers[i]));
-			if (bikingTimes.get(athleteNumbers[i]).equals("Disqualified"))
+			if (bikingTimes.get(athleteNumbers[i]).equals("Disqualified")) //Checks to if the athlete is already disqualified
 			{
-				System.out.println("DQ: "+runningTimes.get(athleteNumbers[i]));
+				System.out.println("DQ: "+runningTimes.get(athleteNumbers[i])); //This can be omitted, only used for debugging
 			}
-			else
+			else //If athlete is not disqualified then it will assign data
 			{
-				if (times.randomTime() > 60)
+				if (times.randomTime() > 60) //If the random time is greater than or equal to 60 then it disqualifies the athlete
 				{
 					runningTimes.put(athleteNumbers[i], "Disqualified");
 					total.put(athleteNumbers[i], "Disqualified");
@@ -657,12 +673,10 @@ public class Athlete extends Application
 					runningTimesFemale.put(athleteNumbers[i], "Disqualified");
 					totalFemales.put(athleteNumbers[i], "Disqualified");
 				}
-				
-				//bikingTimes.put(athleteNumbers[i], ""+times.randomTime());
-				//System.out.println("Not Disqualified: "+bikingTimes.get(athleteNumbers[i]));
 			}
 		}
 	}
+	//Calculates everything
 	public static void totalStuff(Map<Integer, String> firstNames, Map<Integer, String> lastNames, Map<Integer, String> genders, 
 			Map<Integer, String> firstNamesMale, Map<Integer, String> lastNamesMale, Map<Integer, String> gendersMale, 
 			Map<Integer, String> firstNamesFemale, Map<Integer, String> lastNamesFemale, Map<Integer, String> gendersFemale, 
@@ -672,75 +686,53 @@ public class Athlete extends Application
 			Map<Integer, String> total, Map<Integer, String> totalMales, Map<Integer, String> totalFemales, 
 			int amountOfAthletes, int[] athleteNumbers)
 	{
-		//System.out.println("Amount of Athletes: "+amountOfAthletes);
 		for (int i = 0; i < amountOfAthletes; i++)
 		{
-			//System.out.println("Start");
 			double swimTime, bikeTime, runTime, totalTime;
+			//If the athlete is not already disqualified then it will not calculate the data
+			//You cannot calculate a String
 			if (runningTimes.get(athleteNumbers[i]).equals("Disqualified"))
 			{
-				//System.out.println("DQ: "+total.get(athleteNumbers[i]));
+				System.out.println("DQ: "+total.get(athleteNumbers[i])); //This can be omitted
 			}
 			else
 			{
+				/*
+				 * Since the Maps have values of the String type it has to be parsed into a double
+				 * then assigned to a double variable and calculated
+				 */
 				swimTime = Double.parseDouble(swimmingTimes.get(athleteNumbers[i]));
 				bikeTime = Double.parseDouble(bikingTimes.get(athleteNumbers[i]));
 				runTime = Double.parseDouble(runningTimes.get(athleteNumbers[i]));
-				totalTime = Math.round((100) * (swimTime + bikeTime + runTime))/100.0;
-				total.put(athleteNumbers[i], ""+totalTime);
-				//System.out.println("Total Time: "+total.get(athleteNumbers[i]));
+				totalTime = Math.round((100) * (swimTime + bikeTime + runTime))/100.0; //A number to the hundreths place
+				total.put(athleteNumbers[i], ""+totalTime); //Assigns that time to the total Map
 				
-				if (swimmingTimesMale.containsKey(athleteNumbers[i]))
+				if (swimmingTimesMale.containsKey(athleteNumbers[i])) //Calculates the times for the males
 				{
 					swimTime = Double.parseDouble(swimmingTimesMale.get(athleteNumbers[i]));
 					bikeTime = Double.parseDouble(bikingTimesMale.get(athleteNumbers[i]));
 					runTime = Double.parseDouble(runningTimesMale.get(athleteNumbers[i]));
 					totalTime = Math.round((100) * (swimTime + bikeTime + runTime))/100.0;;
 					totalMales.put(athleteNumbers[i], ""+totalTime);
-					//System.out.println("Males Total Time: "+totalMales.get(athleteNumbers[i]));
 				}
-				else if (swimmingTimesFemale.containsKey(athleteNumbers[i]))
+				else if (swimmingTimesFemale.containsKey(athleteNumbers[i])) //Calculates the times for the females
 				{
-					//System.out.println(swimmingTimesFemale.get(athleteNumbers[i]));
 					swimTime = Double.parseDouble(swimmingTimesFemale.get(athleteNumbers[i]));
 					bikeTime = Double.parseDouble(bikingTimesFemale.get(athleteNumbers[i]));
 					runTime = Double.parseDouble(runningTimesFemale.get(athleteNumbers[i]));
 					totalTime = Math.round((100) * (swimTime + bikeTime + runTime))/100.0;;
 					totalFemales.put(athleteNumbers[i], ""+totalTime);
-					//System.out.println("Females Total Time: "+totalFemales.get(athleteNumbers[i]));
 				}
-				/**
-				swimTime = Double.parseDouble(swimmingTimesMale.get(athleteNumbers[i]));
-				bikeTime = Double.parseDouble(bikingTimesMale.get(athleteNumbers[i]));
-				runTime = Double.parseDouble(runningTimesMale.get(athleteNumbers[i]));
-				totalTime = swimTime + bikeTime + runTime;
-				totalMales.put(athleteNumbers[i], ""+totalTime);
-				System.out.println("Males Total Time: "+totalMales.get(athleteNumbers[i]));
-				
-				System.out.println(swimmingTimesFemale.get(athleteNumbers[i]));
-				swimTime = Double.parseDouble(swimmingTimesFemale.get(athleteNumbers[i]));
-				bikeTime = Double.parseDouble(bikingTimesFemale.get(athleteNumbers[i]));
-				runTime = Double.parseDouble(runningTimesFemale.get(athleteNumbers[i]));
-				totalTime = swimTime + bikeTime + runTime;
-				totalFemales.put(athleteNumbers[i], ""+totalTime);
-				System.out.println("Females Total Time: "+totalFemales.get(athleteNumbers[i]));
-				*/
 			}
-			//System.out.println("Out of the if-else");
 		}
 	}
-	public static void printAllAthletes(Map<Integer, String> swimmingTimes, Map<Integer, String> bikingTimes, 
-			Map<Integer, String> runningTimes, Map<Integer, String> total, int[] athleteNumbers)
-	{
-		System.out.println(total.keySet());
-		
-	}
+	//Prints the data
 	public static void printAllAthletes(Map<Integer, String> athletesTotalTime, Map<Integer, String> firstNames, Map<Integer, String> lastNames, 
 			Map<Integer, String> genders, Map<Integer, String> swimmingTimes, Map<Integer, String> bikingTimes, Map<Integer, String> runningTimes)
 	{
 		int[] gs = new int[athletesTotalTime.size()];
 		int i = 0;
-		//System.out.println(athletesTotalTime.keySet());
+	
 		Set<Integer> array =  athletesTotalTime.keySet();
 		Iterator<Integer> blah = array.iterator();
 		while (blah.hasNext())
@@ -751,21 +743,12 @@ public class Athlete extends Application
 		
 		for (int j = 0; j < (athletesTotalTime.size()); j++)
 		{
-			//System.out.println("Keys: " +gs[j]);
 			
 			System.out.println("First Name: " + firstNames.get(gs[j]) + " Last Name: " + lastNames.get(gs[j]) + " Gender: " + genders.get(gs[j]) + " Swimming: " + 
 			swimmingTimes.get(gs[j]) + " Biking: " + bikingTimes.get(gs[j]) + " Running: " + 
 					runningTimes.get(gs[j]) + " Total: " + athletesTotalTime.get(gs[j]));
 					
 		}
-		
-		/**
-		
-		for (Map.Entry<Integer, String> entry : athletesTotalTime.entrySet()) {
-			System.out.println("[Key] : " + entry.getKey() 
-                                      + " [Value] : " + entry.getValue());
-		}
-		*/
 	}
 	
 	public static void main(String[] args)
@@ -900,18 +883,15 @@ public class Athlete extends Application
 			System.out.println(ob);
 		}
 	}
-		@Override
-		public void start(Stage primaryStage) throws Exception {
-		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("Triatholon Prjoect Demo");
+	@Override
+	public void start(Stage primaryStage) throws Exception 
+	{
+	this.primaryStage = primaryStage;
+	this.primaryStage.setTitle("Triatholon Prjoect Demo");
 		
-		//initializeRootLayout();
-		//showControlsData();
-
-		
+	//initializeRootLayout();
+	//showControlsData();
 	}
-		
-	
 	private void showControlsData() {
 		FXMLLoader load = new FXMLLoader();
 		load.setLocation(Athlete.class.getResource("Athlete_Controller.fxml"));
@@ -937,9 +917,5 @@ public class Athlete extends Application
 		Scene scn = new Scene(rootLayout);
 		primaryStage.setScene(scn);
 		primaryStage.show();
-	
-		
-		
 	}
-	
 }
