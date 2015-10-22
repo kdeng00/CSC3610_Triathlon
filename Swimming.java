@@ -4,9 +4,6 @@ package tryMe;
 
 public class Swimming
 {
-	
-	
-	
 	public Swimming()
 	{
 		
@@ -17,8 +14,8 @@ public class Swimming
 		this.swimTimeInSeconds = swimTimeInSeconds;
 	}
 	
-	private double swimTimeInMinutes;
-	private double swimTimeInSeconds;
+	private double swimTimeInMinutes; //This is used to convert the doubles into somtething legible
+	private double swimTimeInSeconds; //This is used to convert the doubles into something legible
 	private double generatedTime;
 	
 	
@@ -39,11 +36,13 @@ public class Swimming
 		return swimTimeInSeconds;
 	}
 	
+	//Generates a random time
 	public void generateRandomTime()
 	{
 		generatedTime = (1) + (Math.random()*60);
 		generatedTime = Math.round(generatedTime * 100)/100.0;
 	}
+	//Returns the generated random time
 	public double randomTime()
 	{
 		return generatedTime;
