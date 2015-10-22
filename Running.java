@@ -5,8 +5,6 @@ package tryMe;
 public class Running
 {
 	
-	
-	
 	public Running()
 	{
 		
@@ -17,8 +15,8 @@ public class Running
 		this.runningTimeInSeconds = runningTimeInSeconds;
 	}
 	
-	private double runningTimeInMinutes;
-	private double runningTimeInSeconds;
+	private double runningTimeInMinutes; //This is used for converting the double into something legible
+	private double runningTimeInSeconds; //This is used for converting the double into something legible
 	private double generatedTime;
 	
 	
@@ -39,11 +37,13 @@ public class Running
 		return runningTimeInSeconds;
 	}
 	
+	//Generates the random time
 	public void generateRandomTime()
 	{
 		generatedTime = 0 + (Math.random()*50);
 		generatedTime = Math.round(generatedTime*100)/100.0;
 	}
+	//Returns the generated random time
 	public double randomTime()
 	{
 		return generatedTime;
