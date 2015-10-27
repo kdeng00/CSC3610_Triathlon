@@ -18,6 +18,7 @@ public class Biking
 	private double bikeTimeInMinutes; //This is used for converting the double into something legible
 	private double bikeTimeInSeconds; //This is used for converting the double into something legible
 	private double generatedTime;
+	final private int fastestbikingTimeInMinutes = 39;
 	
 	
 	public void setBikeTimeInMinutes(double minutes)
@@ -40,8 +41,9 @@ public class Biking
 	//Generates a random time
 	public void generateRandomTime()
 	{
-		generatedTime = 0 + (Math.random()*40);
-		generatedTime = Math.round(generatedTime * 100)/100.0;
+		//Generates a random time greater than or equal to 39 but less than 89
+		generatedTime = fastestBikeTimeInMinutes + (Math.random() * 50);
+		generatedTime = Math.round(generatedTime * 100)/100.0; //Returns a value to the hundreths position
 	}
 	//Returns the generated random time
 	public double randomTime()
