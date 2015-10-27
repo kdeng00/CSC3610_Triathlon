@@ -18,6 +18,7 @@ public class Running
 	private double runningTimeInMinutes; //This is used for converting the double into something legible
 	private double runningTimeInSeconds; //This is used for converting the double into something legible
 	private double generatedTime;
+	final private int fastestRunningTimeInMinutes = 18;
 	
 	
 	public void setRunningTimeInMinutes(double minutes)
@@ -40,7 +41,8 @@ public class Running
 	//Generates the random time
 	public void generateRandomTime()
 	{
-		generatedTime = 0 + (Math.random()*50);
+		//Return
+		generatedTime = fastestRunningTimeInMinutes + (Math.random() * 65);
 		generatedTime = Math.round(generatedTime*100)/100.0;
 	}
 	//Returns the generated random time
