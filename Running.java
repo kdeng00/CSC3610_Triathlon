@@ -41,9 +41,9 @@ public class Running
 	//Generates the random time
 	public void generateRandomTime()
 	{
-		//Return
+		//generates a value greater than or equal to 18 but less than 83
 		generatedTime = fastestRunningTimeInMinutes + (Math.random() * 65);
-		generatedTime = Math.round(generatedTime*100)/100.0;
+		generatedTime = Math.round(generatedTime*100)/100.0; //Rounds to the hundreth power
 	}
 	//Returns the generated random time
 	public double randomTime()
