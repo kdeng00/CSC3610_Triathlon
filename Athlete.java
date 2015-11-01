@@ -1,24 +1,30 @@
 package tryMe;
 
 
+/*
+ * What needs to be done:
+ * 
+ * Done: Change the gender stuff from equalsTo() to equalsIgnoreCase()
+ * Done: Change the comparator
+ * Done: Create a String method to return a time
+ * Done: Print other athletes - male and female
+ */
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.SortedMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.Stack;
-import java.util.TreeMap;
 import java.util.Queue;
-import java.util.Comparator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -28,9 +34,6 @@ import javafx.stage.Stage;
 
 public class Athlete extends Application
 {
-	public BorderPane rootLayout;
-	public AnchorPane controlData;
-	public Stage primaryStage;
 	
 	public Athlete()
 	{
@@ -60,6 +63,9 @@ public class Athlete extends Application
 	private static int hours;
 	private static int minutes;
 	private static int seconds;
+	private Stage primaryStage;
+	private BorderPane rootLayout;
+	private AnchorPane controlData;
 	
 	public String[][] getAthletesData()
 	{
@@ -81,7 +87,7 @@ public class Athlete extends Application
 	public void setLastName(String lastName) {
 		Athlete.lastName = lastName;
 	}
-	public static String getGender() {
+	public String getGender() {
 		return gender;
 	}
 	public void setGender(String gender) {
@@ -424,8 +430,8 @@ public class Athlete extends Application
 	/* 
 	 * This is the assign method revised. I didn't bother removing the original assign method because it is good to keep
 	 * a history of the what has been used.
-	 * This method just assins the athlete's Data.
-	 * The reason why there are so many arguments foro the method is because all of the maps are being used to assign information
+	 * This method just assigns the athlete's Data.
+	 * The reason why there are so many arguments for the method is because all of the maps are being used to assign information
 	 */
 	public static void assignRevised(Map<Integer, String> firstNames, Map<Integer, String> lastNames, Map<Integer, String> genders, 
 			Map<Integer, String> firstNamesMale, Map<Integer, String> lastNamesMale, Map<Integer, String> gendersMale, 
@@ -461,12 +467,12 @@ public class Athlete extends Application
 			while (true)
 			{
 				gender = userInput.nextLine();
-				if (gender.equals("Male") || gender.equals("male"))
+				if (gender.equalsIgnoreCase("Male"))
 				{
 					athleteInformation.setGender(gender);
 					break;
 				}
-				else if (gender.equals("Female") || gender.equals("female"))
+				else if (gender.equalsIgnoreCase("Female"))
 				{
 					athleteInformation.setGender(gender);
 					break;
@@ -478,22 +484,25 @@ public class Athlete extends Application
 			athleteInformation.setAthleteNumber(""+athleteNumber); //Concatenates the int to a String
 			
 			//Assigns the athletes to their corresponding Maps
-			if (gender.equals("Male") || gender.equals("male")
+			if (gender.equalsIgnoreCase("Male"))
 			{
-				firstNamesMale.put(athleteNumbers[i], athleteInformation.getFirstName);
-				lastNamesMale.put(athleteNumbers[i], athleteInformation.getLastName);
-				gendersMale.put(athleteNumbers[i], athleteInformation.getGender);
+				//System.out.println("This Athlete is a male: ");
+				firstNamesMale.put(athleteNumbers[i], athleteInformation.getFirstName());
+				lastNamesMale.put(athleteNumbers[i], athleteInformation.getLastName());
+				gendersMale.put(athleteNumbers[i], athleteInformation.getGender());
 			}
-			else if (gender.equals("Female") || gender.equals("female"))
+			else if (gender.equalsIgnoreCase("Female"))
 			{
-				firstNamesFemale.put(athleteNumbers[i], firstName);
-				lastNamesFemale.put(athleteNumbers[i], lastName);
-				gendersFemale.put(athleteNumbers[i], gender);
+				//System.out.println("This Athlete is a female: ");
+				firstNamesFemale.put(athleteNumbers[i], athleteInformation.getFirstName());
+				lastNamesFemale.put(athleteNumbers[i], athleteInformation.getLastName());
+				gendersFemale.put(athleteNumbers[i], athleteInformation.getGender());
 			}
-			firstNames.put(athleteNumbers[i], firstName);
-			lastNames.put(athleteNumbers[i], lastName);
-			genders.put(athleteNumbers[i], gender);
+			firstNames.put(athleteNumbers[i], athleteInformation.getFirstName());
+			lastNames.put(athleteNumbers[i], athleteInformation.getLastName());
+			genders.put(athleteNumbers[i], athleteInformation.getGender());
 		}
+		
 		userInput.close();
 	}
 	/*
@@ -503,10 +512,10 @@ public class Athlete extends Application
 	public static void swimStuff(Map<Integer, String> firstNames, Map<Integer, String> lastNames, Map<Integer, String> genders, 
 			Map<Integer, String> firstNamesMale, Map<Integer, String> lastNamesMale, Map<Integer, String> gendersMale, 
 			Map<Integer, String> firstNamesFemale, Map<Integer, String> lastNamesFemale, Map<Integer, String> gendersFemale, 
-			Map<Integer, String> swimmingTimes, Map<Integer, String> swimmingTimesMale, Map<Integer, String> swimmingTimesFemale, 
-			Map<Integer, String> bikingTimes, Map<Integer, String> bikingTimesMale, Map<Integer, String> bikingTimesFemale, 
-			Map<Integer, String> runningTimes, Map<Integer, String> runningTimesMale, Map<Integer, String> runningTimesFemale, 
-			Map<Integer, String> total, Map<Integer, String> totalMales, Map<Integer, String> totalFemales, 
+			Map<Integer, Double> swimmingTimes, Map<Integer, Double> swimmingTimesMale, Map<Integer, Double> swimmingTimesFemale, 
+			Map<Integer, Double> bikingTimes, Map<Integer, Double> bikingTimesMale, Map<Integer, Double> bikingTimesFemale, 
+			Map<Integer, Double> runningTimes, Map<Integer, Double> runningTimesMale, Map<Integer, Double> runningTimesFemale, 
+			Map<Integer, Double> total, Map<Integer, Double> totalFemales, Map<Integer, Double> totalMales, 
 			int amountOfAthletes, int[] athleteNumbers)
 	{
 		Swimming times = new Swimming(); //Instance of the swimming class to store data
@@ -515,45 +524,23 @@ public class Athlete extends Application
 		for (int i = 0; i < amountOfAthletes; i++)
 		{
 			times.generateRandomTime(); //Generates a random time but does not return it
-			if (times.randomTime() >= 60) //Checks to see if the random time is greater than 60 minutes... Changed it to equal to or greater than
-			{
-				//Disqualifies athlete's other times
-				swimmingTimes.put(athleteNumbers[i], "Disqualified");
-				bikingTimes.put(athleteNumbers[i], "Disqualified");
-				runningTimes.put(athleteNumbers[i], "Disqualified");
-				total.put(athleteNumbers[i], "Disqualified");
-			}
-			else //If not greater than 60 than it assigns the time to the Map
-			{
-				swimmingTimes.put(athleteNumbers[i], ""+times.randomTime());
-				System.out.println("Time: "+swimmingTimes.get(athleteNumbers[i]));
-			}
+			
+			
+			 //If not greater than 60 than it assigns the time to the Map
+		
+			swimmingTimes.put(athleteNumbers[i], times.randomTime());
 			/*
 			 * The reason why this if statement is not an else-if statement and continuing from the
 			 * last statement because this assigns information to the gender-specific Maps
 			 * Essentially repeating the last step but for the specific Maps
 			 */
-			if (gendersMale.containsKey(athleteNumbers[i]) && times.randomTime() < 60) //The containsKey method checks the key if it's available
+			if (gendersMale.containsKey(athleteNumbers[i])) //The containsKey method checks the key if it's available
 			{
-				swimmingTimesMale.put(athleteNumbers[i], ""+times.randomTime()); //Assigns the data
+				swimmingTimesMale.put(athleteNumbers[i], times.randomTime()); //Assigns the data
 			}
-			else if (gendersMale.containsKey(athleteNumbers[i]) && times.randomTime() >= 60) //Disqualifies Athlete
+			else if (gendersFemale.containsKey(athleteNumbers[i])) //Repeat of the beginning if Statement
 			{
-				swimmingTimesMale.put(athleteNumbers[i], "Disqualified");
-				bikingTimesMale.put(athleteNumbers[i], "Disqualified");
-				runningTimesMale.put(athleteNumbers[i], "Disqualified");
-				totalMales.put(athleteNumbers[i], "Disqualified");
-			}
-			else if (gendersFemale.containsKey(athleteNumbers[i]) && times.randomTime() < 60) //Repeat of the beginning if Statement
-			{
-				swimmingTimesFemale.put(athleteNumbers[i], ""+times.randomTime());
-			}
-			else if (gendersFemale.containsKey(athleteNumbers[i]) && times.randomTime() >= 60) //Repeat of the previous statment
-			{
-				swimmingTimesFemale.put(athleteNumbers[i], "Disqualified");
-				bikingTimesFemale.put(athleteNumbers[i], "Disqualified");
-				runningTimesFemale.put(athleteNumbers[i], "Disqualified");
-				totalFemales.put(athleteNumbers[i], "Disqualified");
+				swimmingTimesFemale.put(athleteNumbers[i], times.randomTime());
 			}
 		}
 	}
@@ -564,62 +551,33 @@ public class Athlete extends Application
 	public static void bikeStuff(Map<Integer, String> firstNames, Map<Integer, String> lastNames, Map<Integer, String> genders, 
 			Map<Integer, String> firstNamesMale, Map<Integer, String> lastNamesMale, Map<Integer, String> gendersMale, 
 			Map<Integer, String> firstNamesFemale, Map<Integer, String> lastNamesFemale, Map<Integer, String> gendersFemale, 
-			Map<Integer, String> swimmingTimes, Map<Integer, String> swimmingTimesMale, Map<Integer, String> swimmingTimesFemale, 
-			Map<Integer, String> bikingTimes, Map<Integer, String> bikingTimesMale, Map<Integer, String> bikingTimesFemale, 
-			Map<Integer, String> runningTimes, Map<Integer, String> runningTimesMale, Map<Integer, String> runningTimesFemale, 
-			Map<Integer, String> total, Map<Integer, String> totalMales, Map<Integer, String> totalFemales, 
+			Map<Integer, Double> swimmingTimes, Map<Integer, Double> swimmingTimesMale, Map<Integer, Double> swimmingTimesFemale, 
+			Map<Integer, Double> bikingTimes, Map<Integer, Double> bikingTimesMale, Map<Integer, Double> bikingTimesFemale, 
+			Map<Integer, Double> runningTimes, Map<Integer, Double> runningTimesMale, Map<Integer, Double> runningTimesFemale, 
+			Map<Integer, Double> total, Map<Integer, Double> totalFemales, Map<Integer, Double> totalMales, 
 			int amountOfAthletes, int[] athleteNumbers)
 	{
 		Biking times = new Biking(); //Biking object
 		for (int i = 0; i < amountOfAthletes; i++)
 		{
+			
 			times.generateRandomTime(); //Generates random time but does not return anything
 			
-			if (swimmingTimes.get(athleteNumbers[i]).equals("Disqualified")) //Checks to see if they are already disqualified
+		
+			bikingTimes.put(athleteNumbers[i], times.randomTime());
+						
+			/*
+			 * Gender-specific time assigning, nothing new here except for:
+			 * does not disqualify the athlete for swimming because the swimming
+			 * event is before the biking event. Swimming is outside of the scope.
+			 */
+			if (gendersMale.containsKey(athleteNumbers[i]))
 			{
-				System.out.println(bikingTimes.get(athleteNumbers[i])); //This statement can be removed, I only used it for debugging
-				//If the athlete is disqualified then it moves on to the next Athlete
+				bikingTimesMale.put(athleteNumbers[i], times.randomTime());
 			}
-			else //If the athlete is not disqualified then it adds data
+			else if (gendersFemale.containsKey(athleteNumbers[i]))
 			{
-				if (times.randomTime() >= 60) //Checks if the generated time is greater or equal to 60
-				{
-					//If greater then it disqualifies the athlete
-					bikingTimes.put(athleteNumbers[i], "Disqualified");
-					runningTimes.put(athleteNumbers[i], "Disqualified");
-					total.put(athleteNumbers[i], "Disqualified");
-				}
-				else //If not then it assigns the athlete data
-				{
-					bikingTimes.put(athleteNumbers[i], ""+times.randomTime());
-					System.out.println("Time: "+bikingTimes.get(athleteNumbers[i]));
-				}
-				
-				/*
-				 * Gender-specific time assigning, nothing new here except for:
-				 * does not disqualify the athlete for swimming because the swimming
-				 * event is before the biking event. Swimming is outside of the scope.
-				 */
-				if (gendersMale.containsKey(athleteNumbers[i]) && times.randomTime() < 60)
-				{
-					bikingTimesMale.put(athleteNumbers[i], ""+times.randomTime());
-				}
-				else if (gendersMale.containsKey(athleteNumbers[i]) && times.randomTime() > 60)
-				{
-					bikingTimesMale.put(athleteNumbers[i], "Disqualified");
-					runningTimesMale.put(athleteNumbers[i], "Disqualified");
-					totalMales.put(athleteNumbers[i], "Disqualified");
-				}
-				else if (gendersFemale.containsKey(athleteNumbers[i]) && times.randomTime() < 60)
-				{
-					bikingTimesFemale.put(athleteNumbers[i], ""+times.randomTime());
-				}
-				else if (gendersFemale.containsKey(athleteNumbers[i]) && times.randomTime() > 60)
-				{
-					bikingTimesFemale.put(athleteNumbers[i], "Disqualified");
-					runningTimesFemale.put(athleteNumbers[i], "Disqualified");
-					totalFemales.put(athleteNumbers[i], "Disqualified");
-				}
+				bikingTimesFemale.put(athleteNumbers[i], times.randomTime());
 			}
 		}
 	}
@@ -627,10 +585,10 @@ public class Athlete extends Application
 	public static void runStuff(Map<Integer, String> firstNames, Map<Integer, String> lastNames, Map<Integer, String> genders, 
 			Map<Integer, String> firstNamesMale, Map<Integer, String> lastNamesMale, Map<Integer, String> gendersMale, 
 			Map<Integer, String> firstNamesFemale, Map<Integer, String> lastNamesFemale, Map<Integer, String> gendersFemale, 
-			Map<Integer, String> swimmingTimes, Map<Integer, String> swimmingTimesMale, Map<Integer, String> swimmingTimesFemale, 
-			Map<Integer, String> bikingTimes, Map<Integer, String> bikingTimesMale, Map<Integer, String> bikingTimesFemale, 
-			Map<Integer, String> runningTimes, Map<Integer, String> runningTimesMale, Map<Integer, String> runningTimesFemale, 
-			Map<Integer, String> total, Map<Integer, String> totalMales, Map<Integer, String> totalFemales, 
+			Map<Integer, Double> swimmingTimes, Map<Integer, Double> swimmingTimesMale, Map<Integer, Double> swimmingTimesFemale, 
+			Map<Integer, Double> bikingTimes, Map<Integer, Double> bikingTimesMale, Map<Integer, Double> bikingTimesFemale, 
+			Map<Integer, Double> runningTimes, Map<Integer, Double> runningTimesMale, Map<Integer, Double> runningTimesFemale, 
+			Map<Integer, Double> total, Map<Integer, Double> totalFemales, Map<Integer, Double> totalMales, 
 			int amountOfAthletes, int[] athleteNumbers)
 	{
 		Running times = new Running(); //Running object
@@ -638,41 +596,14 @@ public class Athlete extends Application
 		{
 			times.generateRandomTime(); //Generates but does not return anything
 			
-			if (bikingTimes.get(athleteNumbers[i]).equals("Disqualified")) //Checks to if the athlete is already disqualified
+			runningTimes.put(athleteNumbers[i], times.randomTime());				
+			if (gendersMale.containsKey(athleteNumbers[i]))
 			{
-				System.out.println("DQ: "+runningTimes.get(athleteNumbers[i])); //This can be omitted, only used for debugging
+				runningTimesMale.put(athleteNumbers[i], times.randomTime());
 			}
-			else //If athlete is not disqualified then it will assign data
+			else if (gendersFemale.containsKey(athleteNumbers[i]))
 			{
-				if (times.randomTime() > 60) //If the random time is greater than or equal to 60 then it disqualifies the athlete
-				{
-					runningTimes.put(athleteNumbers[i], "Disqualified");
-					total.put(athleteNumbers[i], "Disqualified");
-				}
-				else
-				{
-					runningTimes.put(athleteNumbers[i], ""+times.randomTime());
-					System.out.println("Time: "+runningTimes.get(athleteNumbers[i]));
-				}
-				
-				if (gendersMale.containsKey(athleteNumbers[i]) && times.randomTime() < 60)
-				{
-					runningTimesMale.put(athleteNumbers[i], ""+times.randomTime());
-				}
-				else if (gendersMale.containsKey(athleteNumbers[i]) && times.randomTime() > 60)
-				{
-					runningTimesMale.put(athleteNumbers[i], "Disqualified");
-					totalMales.put(athleteNumbers[i], "Disqualified");
-				}
-				else if (gendersFemale.containsKey(athleteNumbers[i]) && times.randomTime() < 60)
-				{
-					runningTimesFemale.put(athleteNumbers[i], ""+times.randomTime());
-				}
-				else if (gendersFemale.containsKey(athleteNumbers[i]) && times.randomTime() > 60)
-				{
-					runningTimesFemale.put(athleteNumbers[i], "Disqualified");
-					totalFemales.put(athleteNumbers[i], "Disqualified");
-				}
+				runningTimesFemale.put(athleteNumbers[i], times.randomTime());
 			}
 		}
 	}
@@ -680,10 +611,10 @@ public class Athlete extends Application
 	public static void totalStuff(Map<Integer, String> firstNames, Map<Integer, String> lastNames, Map<Integer, String> genders, 
 			Map<Integer, String> firstNamesMale, Map<Integer, String> lastNamesMale, Map<Integer, String> gendersMale, 
 			Map<Integer, String> firstNamesFemale, Map<Integer, String> lastNamesFemale, Map<Integer, String> gendersFemale, 
-			Map<Integer, String> swimmingTimes, Map<Integer, String> swimmingTimesMale, Map<Integer, String> swimmingTimesFemale, 
-			Map<Integer, String> bikingTimes, Map<Integer, String> bikingTimesMale, Map<Integer, String> bikingTimesFemale, 
-			Map<Integer, String> runningTimes, Map<Integer, String> runningTimesMale, Map<Integer, String> runningTimesFemale, 
-			Map<Integer, String> total, Map<Integer, String> totalMales, Map<Integer, String> totalFemales, 
+			Map<Integer, Double> swimmingTimes, Map<Integer, Double> swimmingTimesMale, Map<Integer, Double> swimmingTimesFemale, 
+			Map<Integer, Double> bikingTimes, Map<Integer, Double> bikingTimesMale, Map<Integer, Double> bikingTimesFemale, 
+			Map<Integer, Double> runningTimes, Map<Integer, Double> runningTimesMale, Map<Integer, Double> runningTimesFemale, 
+			Map<Integer, Double> total, Map<Integer, Double> totalFemales, Map<Integer, Double> totalMales, 
 			int amountOfAthletes, int[] athleteNumbers)
 	{
 		for (int i = 0; i < amountOfAthletes; i++)
@@ -691,7 +622,7 @@ public class Athlete extends Application
 			double swimTime, bikeTime, runTime, totalTime;
 			//If the athlete is not already disqualified then it will not calculate the data
 			//You cannot calculate a String
-			if (runningTimes.get(athleteNumbers[i]).equals("Disqualified"))
+			if (runningTimes.get(athleteNumbers[i]).equals(100.0))
 			{
 				System.out.println("DQ: "+total.get(athleteNumbers[i])); //This can be omitted
 			}
@@ -701,66 +632,104 @@ public class Athlete extends Application
 				 * Since the Maps have values of the String type it has to be parsed into a double
 				 * then assigned to a double variable and calculated
 				 */
-				swimTime = Double.parseDouble(swimmingTimes.get(athleteNumbers[i]));
-				bikeTime = Double.parseDouble(bikingTimes.get(athleteNumbers[i]));
-				runTime = Double.parseDouble(runningTimes.get(athleteNumbers[i]));
-				totalTime = Math.round((100) * (swimTime + bikeTime + runTime))/100.0; //A number to the hundreths place
-				total.put(athleteNumbers[i], ""+totalTime); //Assigns that time to the total Map
+				swimTime = (swimmingTimes.get(athleteNumbers[i]));
+				bikeTime = (bikingTimes.get(athleteNumbers[i]));
+				runTime = (runningTimes.get(athleteNumbers[i]));
+				totalTime = Math.round((100.0) * (swimTime + bikeTime + runTime))/100.0; //A number to the hundreths place
+				total.put(athleteNumbers[i], totalTime); //Assigns that time to the total Map
 				
 				if (swimmingTimesMale.containsKey(athleteNumbers[i])) //Calculates the times for the males
 				{
-					swimTime = Double.parseDouble(swimmingTimesMale.get(athleteNumbers[i]));
-					bikeTime = Double.parseDouble(bikingTimesMale.get(athleteNumbers[i]));
-					runTime = Double.parseDouble(runningTimesMale.get(athleteNumbers[i]));
+					swimTime = (swimmingTimesMale.get(athleteNumbers[i]));
+					bikeTime = (bikingTimesMale.get(athleteNumbers[i]));
+					runTime = (runningTimesMale.get(athleteNumbers[i]));
 					totalTime = Math.round((100) * (swimTime + bikeTime + runTime))/100.0;;
-					totalMales.put(athleteNumbers[i], ""+totalTime);
+					totalMales.put(athleteNumbers[i], totalTime);
 				}
 				else if (swimmingTimesFemale.containsKey(athleteNumbers[i])) //Calculates the times for the females
 				{
-					swimTime = Double.parseDouble(swimmingTimesFemale.get(athleteNumbers[i]));
-					bikeTime = Double.parseDouble(bikingTimesFemale.get(athleteNumbers[i]));
-					runTime = Double.parseDouble(runningTimesFemale.get(athleteNumbers[i]));
+					swimTime = (swimmingTimesFemale.get(athleteNumbers[i]));
+					bikeTime = (bikingTimesFemale.get(athleteNumbers[i]));
+					runTime = (runningTimesFemale.get(athleteNumbers[i]));
 					totalTime = Math.round((100) * (swimTime + bikeTime + runTime))/100.0;;
-					totalFemales.put(athleteNumbers[i], ""+totalTime);
+					totalFemales.put(athleteNumbers[i], totalTime);
 				}
 			}
 		}
 	}
-	//Prints the data
-	public static void printAllAthletes(Map<Integer, String> athletesTotalTime, Map<Integer, String> firstNames, Map<Integer, String> lastNames, 
-			Map<Integer, String> genders, Map<Integer, String> swimmingTimes, Map<Integer, String> bikingTimes, Map<Integer, String> runningTimes)
+	public static void printAllAthletes(Map<Integer, Double> athletesTotalTime, Map<Integer, String> firstNames, Map<Integer, String> lastNames, 
+			Map<Integer, String> genders, Map<Integer, Double> swimmingTimes, Map<Integer, Double> bikingTimes, Map<Integer, Double> runningTimes, 
+			int[] gs, int zero)
 	{
-		int[] gs = new int[athletesTotalTime.size()]; //Initializes an Array
-		int i = 0; //index variable
-	
-		Set<Integer> array =  athletesTotalTime.keySet(); //Assigns the keySet of the athlete's total time to a Set
-		Iterator<Integer> blah = array.iterator(); //An Iterator of the array with the ordered keys
-		//Iterates through the Iterator and assigns/dump the values to the array
-		while (blah.hasNext())
+		if (athletesTotalTime.size() >= 1)
 		{
-			gs[i] = (int) blah.next();
-			i++;
+			if (swimmingTimes.get(gs[0]) >= 60 || bikingTimes.get(gs[0]) >= 60 || runningTimes.get(gs[0]) >= 60)
+			{
+				System.out.println("All " + genders.get(gs[0]) + " are disqualified");
+			}
+			else
+			{			
+				System.out.println("First Name: " + firstNames.get(gs[0]) + " Last Name: " + lastNames.get(gs[0]) + " Gender: " + genders.get(gs[0]) + 
+						" Athlete Number: " + gs[0] + " Swimming: " + 
+				change(swimmingTimes.get(gs[0])) + " Biking: " + change(bikingTimes.get(gs[0])) + " Running: " + 
+						change(runningTimes.get(gs[0])) + " Total: " + change(athletesTotalTime.get(gs[0])));
+			}
 		}
+		else
+			System.out.println("No " + genders.get(gs[0]) + " athletes entered");
+		
+	}
+	//Prints the data
+	public static void printAllAthletes(Map<Integer, Double> athletesTotalTime, Map<Integer, String> firstNames, Map<Integer, String> lastNames, 
+			Map<Integer, String> genders, Map<Integer, Double> swimmingTimes, Map<Integer, Double> bikingTimes, Map<Integer, Double> runningTimes, 
+			int[] gs)
+	{
+		Set<Integer> dq = new HashSet<Integer>();
+	
+		System.out.println("All Athletes: \n");
 		//Prints the data, all of it.
 		for (int j = 0; j < (athletesTotalTime.size()); j++)
 		{
+			if (swimmingTimes.get(gs[j]) >= 60 || bikingTimes.get(gs[j]) >= 60 || runningTimes.get(gs[j]) >= 60)
+			{
+				dq.add(gs[j]);
+			}
+			else
+			{
+				System.out.println("First Name: " + firstNames.get(gs[j]) + " Last Name: " + lastNames.get(gs[j]) + " Gender: " + genders.get(gs[j]) + 
+					" Athlete Number: " + gs[j] + " Swimming: " + 
+			change(swimmingTimes.get(gs[j])) + " Biking: " + change(bikingTimes.get(gs[j])) + " Running: " + 
+					change(runningTimes.get(gs[j])) + " Total: " + change(athletesTotalTime.get(gs[j])));
+			}
 			
-			System.out.println("First Name: " + firstNames.get(gs[j]) + " Last Name: " + lastNames.get(gs[j]) + " Gender: " + genders.get(gs[j]) + " Swimming: " + 
-			swimmingTimes.get(gs[j]) + " Biking: " + bikingTimes.get(gs[j]) + " Running: " + 
-					runningTimes.get(gs[j]) + " Total: " + athletesTotalTime.get(gs[j]));
-					
+				
+		}
+		Iterator<Integer> ii = dq.iterator();
+		while (ii.hasNext())
+		{
+			int t = ii.next();
+			System.out.println("First Name: " + firstNames.get(t) + " Last Name: " + lastNames.get(t) + " Gender: " + genders.get(t) + 
+					" Athlete Number: " + t + " Swimming: " + 
+			"Disqualified " + " Biking: " + "Disqualified " + " Running: " + 
+					"Disqualified " + " Total: " + "Disqualified");
 		}
 	}
 	
 	public static void main(String[] args)
 	{
-		int amountOfAthletes = 3; //You can change the amount of athletes here.
+		Scanner userInput = new Scanner(System.in);
+		
+		System.out.print("How much athletes will there be: ");
+		
+		int amountOfAthletes = userInput.nextInt(); //You can change the amount of athletes here.
 		int[] athleteNumbers = new int[amountOfAthletes]; //Empty athlete numbers
+		int[] correctedAthleteNumbers = new int[amountOfAthletes];
+		
 		
 		//Creating Map Objects
 		Map<Integer, String> firstNames, lastNames, genders, firstNamesMale, lastNamesMale, 
 		gendersMale, firstNamesFemale, lastNamesFemale, gendersFemale; 
-		Map<Integer, String> swimmingTimes, swimmingTimesMale, 
+		Map<Integer, Double> swimmingTimes, swimmingTimesMale, 
 		swimmingTimesFemale, bikingTimes, bikingTimesMale, bikingTimesFemale, runningTimes, runningTimesMale, 
 		runningTimesFemale, total, totalMales, totalFemales;
 		
@@ -778,21 +747,21 @@ public class Athlete extends Application
 		lastNamesFemale = new HashMap<Integer, String>();
 		gendersFemale = new HashMap<Integer, String>();
 		
-		swimmingTimes = new HashMap<Integer, String>();
-		swimmingTimesMale = new HashMap<Integer, String>();
-		swimmingTimesFemale = new HashMap<Integer, String>();
+		swimmingTimes = new HashMap<Integer, Double>();
+		swimmingTimesMale = new HashMap<Integer, Double>();
+		swimmingTimesFemale = new HashMap<Integer, Double>();
 		
-		bikingTimes = new HashMap<Integer, String>();
-		bikingTimesMale = new HashMap<Integer, String>();
-		bikingTimesFemale = new HashMap<Integer, String>();
+		bikingTimes = new HashMap<Integer, Double>();
+		bikingTimesMale = new HashMap<Integer, Double>();
+		bikingTimesFemale = new HashMap<Integer, Double>();
 		
-		runningTimes = new HashMap<Integer, String>();
-		runningTimesMale = new HashMap<Integer, String>();
-		runningTimesFemale = new HashMap<Integer, String>();
+		runningTimes = new HashMap<Integer, Double>();
+		runningTimesMale = new HashMap<Integer, Double>();
+		runningTimesFemale = new HashMap<Integer, Double>();
 		
-		total = new HashMap<Integer, String>();
-		totalMales = new HashMap<Integer, String>();
-		totalFemales = new HashMap<Integer, String>();
+		total = new HashMap<Integer, Double>();
+		totalMales = new HashMap<Integer, Double>();
+		totalFemales = new HashMap<Integer, Double>();
 		
 		//Old
 		//fillItUp(athletes, numberOfAthletes, dataEntries);
@@ -809,28 +778,28 @@ public class Athlete extends Application
 		//Invoking the assignRevised method
 		assignRevised(firstNames, lastNames, genders, firstNamesMale, lastNamesMale, gendersMale, 
 				firstNamesFemale, lastNamesFemale, gendersFemale, amountOfAthletes, athleteNumbers);
-		System.out.println("Swim: ");
-		//Invoiking the swimStuff method
+		
+		//Invoking the swimStuff method
 		swimStuff(firstNames, lastNames, genders, firstNamesMale, lastNamesMale, gendersMale, 
 				firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimes, swimmingTimesMale, 
 				swimmingTimesFemale, bikingTimes, bikingTimesMale, bikingTimesFemale, runningTimes, 
 				runningTimesMale, runningTimesFemale, total, totalFemales, totalMales, amountOfAthletes, 
 				athleteNumbers);
-		System.out.println("Bike: ");
-		//Invoiking the bikeStuff method
+		
+		//Invoking the bikeStuff method
 		bikeStuff(firstNames, lastNames, genders, firstNamesMale, lastNamesMale, gendersMale, 
 				firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimes, swimmingTimesMale, 
 				swimmingTimesFemale, bikingTimes, bikingTimesMale, bikingTimesFemale, runningTimes, 
 				runningTimesMale, runningTimesFemale, total, totalFemales, totalMales, amountOfAthletes, 
 				athleteNumbers);
-		System.out.println("Run: ");
+		
 		//Invoking the runStuff method
 		runStuff(firstNames, lastNames, genders, firstNamesMale, lastNamesMale, gendersMale, 
 				firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimes, swimmingTimesMale, 
 				swimmingTimesFemale, bikingTimes, bikingTimesMale, bikingTimesFemale, runningTimes, 
 				runningTimesMale, runningTimesFemale, total, totalFemales, totalMales, amountOfAthletes, 
 				athleteNumbers);
-		System.out.println("Total: ");
+		
 		//Invoking the totalStuff method
 		totalStuff(firstNames, lastNames, genders, firstNamesMale, lastNamesMale, gendersMale, 
 				firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimes, swimmingTimesMale, 
@@ -838,69 +807,88 @@ public class Athlete extends Application
 				runningTimesMale, runningTimesFemale, total, totalFemales, totalMales, amountOfAthletes, 
 				athleteNumbers);
 		
+		//System.out.println("Males : " + totalMales.size() + " Females: " + totalFemales.size());
+		
+		int[] correctedAthleteNumbersMale = new int[totalMales.size()];
+		int[] correctedAthleteNumbersFemale = new int[totalFemales.size()];
+		
 		//Debugging stuff
 		//printAllAthletes(swimmingTimes, bikingTimes, runningTimes, total);
 		//System.out.println(firstNames.values());
 		
 		//Created a Map with the sorted times
-		Map<Integer, String> sortedTotal = sortMap(total);
-
-		/**
-		List<Map.Entry<Integer, String>> l = new ArrayList<Map.Entry<Integer, String>>(total.entrySet());
-		Collections.sort(l, new Comparator<Object>()
-		{
-			@Override
-			public int compare(Object one, Object two)
-			{
-				@SuppressWarnings("unchecked")
-				Map.Entry<Integer, String> uno = (Map.Entry<Integer, String>) one;
-				@SuppressWarnings("unchecked")
-				Map.Entry<Integer, String> dos = (Map.Entry<Integer, String>) two;
-				return uno.getValue().compareTo(dos.getValue());
-			}
-		});
-		*/
+		Map<Integer, Double> sortedTotal = sortMap(total);
+		Map<Integer, Double> sortedTotalMale = sortMap(totalMales);
+		Map<Integer, Double> sortedTotalFemale = sortMap(totalFemales);
 		
-		printAllAthletes(sortedTotal, firstNames, lastNames, genders, swimmingTimes, bikingTimes, runningTimes);
+		
+		sortedTotal = swap(total, sortedTotal, athleteNumbers, correctedAthleteNumbers);
+		sortedTotalMale = swap(totalMales, sortedTotalMale, athleteNumbers, correctedAthleteNumbersMale);
+		sortedTotalFemale = swap(totalFemales, sortedTotalFemale, athleteNumbers, correctedAthleteNumbersFemale);
+		
+		//System.out.println("Old Order: " + total.keySet());
+		//System.out.println("New Order: " + sortedTotal.keySet());
+		printAllAthletes(sortedTotal, firstNames, lastNames, genders, swimmingTimes, bikingTimes, runningTimes, correctedAthleteNumbers);
+		System.out.println("\nTop Male: ");
+		printAllAthletes(sortedTotalMale, firstNamesMale, lastNamesMale, gendersMale, swimmingTimesMale, bikingTimesMale, runningTimesMale, correctedAthleteNumbersMale, 0);
+		System.out.println("\nTop Female: ");
+		printAllAthletes(sortedTotalFemale, firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimesFemale, bikingTimesFemale, runningTimesFemale, correctedAthleteNumbersFemale, 0);
 		launch(args);
+		
 	}
 
-	private static Map<Integer, String> sortMap(Map<Integer, String> unsorted)
+	private static Map<Integer, Double> sortMap(Map<Integer, Double> unsorted)
 	{
-		/*
-		 * Changed the List type to an ArrayList because the LinkedList was not needed.
-		 * To sort the information first the data needs to be transferred to something that can
-		 * be sorted. That's why List is being used
-		 */
-		List<Map.Entry<Integer, String>> list = new ArrayList<Map.Entry<Integer, String>>(unsorted.entrySet());
+		List<Double> list = new ArrayList<Double>(unsorted.values());
 		
-		//Sorts the the List
-		Collections.sort(list, new Comparator<Map.Entry<Integer, String>>() 
+		
+		Collections.sort(list, new Comparator<Double>() 
 				{
-					/*
-					 * If the first Map object is greater than the second Map than 
-					 * it returns a 1, if the first Map object is less than the second
-					 * Map then it returns a negative 1. If they are both equal then it
-					 * it will return a 0
-					 */
+
 					@Override
-					public int compare(Map.Entry<Integer, String> one, Map.Entry<Integer, String> two)
-					{
-						return (one.getValue()).compareTo(two.getValue());
+					public int compare(Double o1, Double o2) {
+						return o1.compareTo(o2);
 					}
 				});
-		Map<Integer, String> sorted = new HashMap<Integer, String>();
-		/*
-		 * Iterates through the sorted List and assigns/dumps it in a Map then it gets put
-		 * into the sorted Map
-		 */
-		for (Iterator<Map.Entry<Integer, String>> it = list.iterator(); it.hasNext();) 
+		
+		Map<Integer, Double> sorted = new HashMap<Integer, Double>();
+		int j = 0;
+		for (Iterator<Double> it = list.iterator(); it.hasNext();) 
 		{
-			Map.Entry<Integer, String> entry = it.next();
-			sorted.put(entry.getKey(), entry.getValue());
+			sorted.put(j, it.next());
+			j++;
 		}
-		//Once that is finished it returns the sorted Map
+		
 		return sorted;
+	}
+	public static Map<Integer, Double>swap(Map<Integer,Double> unsorted, Map<Integer, Double> sorted, int array[], int[] arIn)
+	{
+		
+		List<Map.Entry<Integer, Double>> lisp = new ArrayList<Map.Entry<Integer, Double>>(sorted.entrySet());
+		
+		int i = 0;
+		Map<Integer, Double> newThis = new HashMap<Integer, Double>();
+		for (Iterator<Map.Entry<Integer, Double>> jam = lisp.iterator(); jam.hasNext();)
+		{
+			Map.Entry<Integer, Double> entry = jam.next();
+			
+			int iterate = 0;
+			
+			while (true)
+			{
+				if (unsorted.get(array[iterate]) == (entry.getValue()))
+				{
+					
+					newThis.put(array[iterate], entry.getValue());
+					arIn[i] = array[iterate];
+					i++;
+					break;
+				}
+				else
+					iterate++;	
+			}
+		}
+		return newThis;
 	}
 	
 	//To go through an integer array
@@ -911,14 +899,56 @@ public class Athlete extends Application
 			System.out.println(ob);
 		}
 	}
-	@Override
+
+	public static String change(double eventTime)
+	{
+		double time;
+		time = (eventTime);
+		
+		//Let us say that time is equal to 135.6
+		int hours;
+		int minutes;
+		double seconds;
+	
+		hours = (int)(time / 60); //Would be 2
+		time = time % 60; //Would be 15.8
+		minutes = (int) (time); //Would be 15
+		time = time - ((int) time); //Would be .8
+		seconds = Math.round(time * 60 * 100)/100.0;
+		
+		if (hours >= 1 && minutes < 10 && seconds < 10)
+		{
+			return hours + ":" + "0" + minutes + ":" + "0" + seconds;
+		}
+		else if (hours >= 1 && minutes >= 10 && seconds < 10)
+		{
+			return hours + ":" + minutes + ":" + "0" + seconds;
+		}
+		else if (hours >= 1 && minutes < 10 && seconds >= 10)
+		{
+			return hours + ":" + "0" + minutes + ":" + seconds;
+		}
+		else if (hours == 0 && seconds < 10)
+		{
+			return minutes + ":" + "0" + seconds;
+		}
+		else if (hours == 0 && seconds >= 10)
+		{
+			return minutes + ":" + seconds;
+		}
+		else
+		{
+			return hours + ":" + minutes + ":" + seconds;
+		}
+	}
+	
 	public void start(Stage primaryStage) throws Exception 
 	{
 	this.primaryStage = primaryStage;
 	this.primaryStage.setTitle("Triatholon Prjoect Demo");
 		
-	//initializeRootLayout();
-	//showControlsData();
+	initializeRootLayout();
+	showControlsData();
 	}
 	private void showControlsData() {
 		FXMLLoader load = new FXMLLoader();
