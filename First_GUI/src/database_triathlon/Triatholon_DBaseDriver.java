@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import database_triatholon.Triatholon_Info;
 
 public class Triatholon_DBaseDriver {
 	private Connection triatholonconn;
