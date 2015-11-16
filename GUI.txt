@@ -1,3 +1,6 @@
+
+Kun Deng: Are these the files that we will be working on now?
+
 Triathlon_AthleteTableGUI.java
 Triathlon_DataEntryGUI.java
 Triathlon_DBConnect.java
