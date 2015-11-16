@@ -1,6 +1,6 @@
+package database_triathlon;
 
 import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
