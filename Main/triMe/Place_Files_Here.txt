@@ -1,6 +1,0 @@
-Place the main project files here in this directrory.
-
-Whenever changes are made and the majority of the group agrees it will be applied to this directory.
-
-If there is one or two people who disagree with the changes then they can explain why we the changes
-should not be applied.
