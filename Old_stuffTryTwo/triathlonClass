@@ -1,0 +1,190 @@
+package tryMe;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+public class Triathlon {
+
+	private final StringProperty lName = new SimpleStringProperty(this, "Last Name");
+	private final StringProperty fName = new SimpleStringProperty(this, "First Name");
+	private final StringProperty gender = new SimpleStringProperty(this, "Gender");
+	private final StringProperty athleteNumber = new SimpleStringProperty(this, "Athlete Number");
+	private final StringProperty athletePhoneNumber = new SimpleStringProperty(this, "Athlete Phone Number");
+	private final StringProperty athleteEmail = new SimpleStringProperty(this, "Athlete Email");
+	private final StringProperty athleteSwimmingScore = new SimpleStringProperty(this, "Athlete Swimming Score");
+	private final StringProperty athleteBikingScore = new SimpleStringProperty(this, "Athlete Biking Score");
+	private final StringProperty athleteRunningScore = new SimpleStringProperty(this, "Athlete Running Score");
+	private final StringProperty athleteTotalScore = new SimpleStringProperty(this, "Athlete Total Score");
+	private final StringProperty emergencyContactName = new SimpleStringProperty(this, "Emergency Contact Name");
+	private final StringProperty emergencyContactNumber = new SimpleStringProperty(this, "Emergency Contact Number");
+	
+	//-------
+	public StringProperty LNameProperty(){
+		return lName;
+	}
+	public StringProperty FNameProperty(){
+		return fName;
+	}
+	//------------------
+	//-------
+		public StringProperty GenderProperty(){
+			return gender;
+		}
+		public StringProperty AthleteNumberProperty(){
+			return athleteNumber;
+		}
+		//------------------
+		//-------
+		public StringProperty AthletePhoneNumberProperty(){
+			return athletePhoneNumber;
+		}
+		public StringProperty athleteEmailProperty(){
+			return athleteEmail ;
+		}
+		//------------------
+		//-------
+		public StringProperty AthleteSwimmingScoreProperty(){
+			return athleteSwimmingScore;
+		}
+		public StringProperty athleteBikingScoreProperty(){
+			return athleteBikingScore;
+		}
+		//------------------
+		//-------
+		public StringProperty athleteRunningScoreProperty(){
+			return athleteRunningScore;
+		}
+		public StringProperty athleteTotalScoreProperty(){
+			return athleteTotalScore;
+		}
+		//------------------
+		//-------
+		public StringProperty emergencyContactNameProperty(){
+			return emergencyContactName;
+		}
+		public StringProperty emergencyContactNumberProperty(){
+			return emergencyContactNumber;
+		}
+	
+		// Genererate getters and setters using String and Property:
+		
+	    // @return the lName
+		public final String getLName() {
+			return LNameProperty().get();
+		}
+		// Set last name
+		public final void setLName(String lName){
+			LNameProperty().set(lName);
+		}
+	    //@return the fName
+		public final String getFName() {
+			return FNameProperty().get();
+		}
+		// Set first name
+		public final void setFName(String fName){
+			FNameProperty().set(fName);
+		}
+		// @return the gender
+		public final String getGender() {
+			return GenderProperty().get();
+		}
+		// Set gender
+	    public final void setGender(String gender){
+			GenderProperty().set(gender);
+		}	
+		// @return the athlete number
+		public final String getAthleteNumber() {
+			return AthleteNumberProperty().get();
+		}
+		// Set athlete number
+		public final void setAthleteNumber(String athleteNumber){
+			AthleteNumberProperty().set(athleteNumber);
+		}		
+		//@return the athlete phone number
+		public final String getAthletePhoneNumber() {
+			return AthletePhoneNumberProperty().get();
+		}
+		// Set athlete phone number
+		public final void setAthletePhoneNumber(String athletePhoneNumber){
+			AthletePhoneNumberProperty().set(athletePhoneNumber);
+		}		
+		// @return the athlete email
+		public final String getAthleteEmail() {
+			return athleteEmailProperty().get();
+		}
+		// Set athlete phone number???
+		public final void setAthleteEmail(String athleteEmail){
+			athleteEmailProperty().set(athleteEmail);
+		}
+		// @return the athlete swimming score
+		public final String getAthleteSwimmingScore() {
+			return AthleteSwimmingScoreProperty().get();
+		}
+		// Set athlete swimming score
+		public final void setAthleteSwimmingScore(String athleteSwimmingScore){
+			AthleteSwimmingScoreProperty().set(athleteSwimmingScore);
+		}
+	    // @return the athlete biking score???
+		public final String getAthleteBikingScore() {
+			return athleteBikingScoreProperty().get();
+		}
+		// Set athlete biking score????
+		public final void setAthleteBikingScore(String athleteBikingScore){
+			athleteBikingScoreProperty().set(athleteBikingScore);
+		}
+		// @return the athlete running score???
+		public final String getAthleteRunningScore() {
+			return athleteRunningScoreProperty().get();
+		}
+		// Set athlete running score???
+		public final void setAthleteRunningScore(String athleteRunningScore){
+			athleteRunningScoreProperty().set(athleteRunningScore);
+		}
+		// @return the athlete total score???
+		public final String getAthleteTotalScore() {
+			return athleteTotalScoreProperty().get();
+		}
+		// Set athlete total score???
+		public final void setAthleteTotalScore(String athleteTotalScore){
+			athleteTotalScoreProperty().set(athleteTotalScore);
+		}
+		// @return the emergency contact name???
+		public final String getEmergencyContactName() {
+			return emergencyContactNameProperty().get();
+		}
+		// Set emergency contact name???
+		public final void setEmergencyContactName(String emergencyContactName){
+			emergencyContactNameProperty().set(emergencyContactName);
+		}
+		// @return the emergency contact number???
+		public final String getEmergencyContactNumber() {
+			return emergencyContactNumberProperty().get();
+		}
+		// Set emergency contact number score???
+		public final void setEmergencyContactNumber(String emergencyContactNumber){
+			emergencyContactNumberProperty().set(emergencyContactNumber);
+		}
+		// Create a constructor
+		public Triathlon() {
+		}
+		// Create constructor with parameters
+		public Triathlon(String lName, String fName, String gender, String athleteNumber, String athletePhoneNumber,
+				String athleteEmail, String athleteSwimmingScore, String athleteBikingScore, 
+				String athleteRunningScore, String athleteTotalScore, String emergencyContactName,
+				String emergencyContactNumber) {
+			setLName(lName);
+			setFName(fName);
+			setGender(gender);
+			setAthleteNumber(athleteNumber);
+			setAthletePhoneNumber(athletePhoneNumber);
+			setAthleteEmail(athleteEmail);
+			setAthleteSwimmingScore(athleteSwimmingScore);
+			setAthleteBikingScore(athleteBikingScore);
+			setAthleteRunningScore(athleteRunningScore);
+			setAthleteTotalScore(athleteTotalScore);
+			setEmergencyContactName(emergencyContactName);
+			setEmergencyContactNumber(emergencyContactNumber);
+			
+		}
+	
+}
