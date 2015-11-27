@@ -1,0 +1,129 @@
+package tryMe;
+
+import java.io.IOException;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
+public class Triathlon_AthleteTableGUI extends Application{
+	
+	@FXML
+	private MenuItem mbDataEntry;
+	@FXML
+	private MenuItem mbExit;
+	
+	private Triathlon_DBConnect databaseConnection;
+	private Stage primaryStage;
+	private BorderPane rootLayout;
+
+	
+	@Override
+	public void start(Stage primaryStage) throws Exception{
+		
+		databaseConnection = new Triathlon_DBConnect("jdbc:mysql://localhost:3306/triathlon", "root", "");
+	
+		// Create table view 
+		TableView<Triathlon> athletesTable = new TableView<>();
+		
+		TableColumn<Triathlon, String> lNameCol = new TableColumn<>("Athletes Last Name");
+		lNameCol.setCellValueFactory(new PropertyValueFactory<>("Last Name"));
+		
+		TableColumn<Triathlon, String> fNameCol = new TableColumn<>("Athletes First Name");
+		fNameCol.setCellValueFactory(new PropertyValueFactory<>("First Name"));
+		
+		TableColumn<Triathlon, String> genderCol = new TableColumn<>("Athletes Gender");
+		genderCol.setCellValueFactory(new PropertyValueFactory<>("Gender"));
+		
+		TableColumn<Triathlon, String> athleteNumberCol = new TableColumn<>("Athletes Number");
+		athleteNumberCol.setCellValueFactory(new PropertyValueFactory<>("Athlete Number"));
+		
+		TableColumn<Triathlon, String> athletePhoneNumberCol = new TableColumn<>("Athletes Phone number");
+		athletePhoneNumberCol.setCellValueFactory(new PropertyValueFactory<>("Athlete Phone Number"));
+		
+		TableColumn<Triathlon, String> athleteEmailCol = new TableColumn<>("Athletes Email");
+		athleteEmailCol.setCellValueFactory(new PropertyValueFactory<>("Athlete Email"));
+		
+		TableColumn<Triathlon, String> athleteSwimmingScoreCol = new TableColumn<>("Athletes Swimming Score");
+		athleteSwimmingScoreCol.setCellValueFactory(new PropertyValueFactory<>("Athlete Swimming Score"));
+		
+		TableColumn<Triathlon, String> athleteBikingScoreCol = new TableColumn<>("Athletes Biking Score");
+		athleteBikingScoreCol.setCellValueFactory(new PropertyValueFactory<>("Athlete Biking Score"));
+		
+		TableColumn<Triathlon, String> athleteRunningScoreCol = new TableColumn<>("Athletes Running Score");
+		athleteRunningScoreCol.setCellValueFactory(new PropertyValueFactory<>("Athlete Runnign Score"));
+		
+		TableColumn<Triathlon, String> athleteTotalScoreCol = new TableColumn<>("Athletes Total Score");
+		athleteTotalScoreCol.setCellValueFactory(new PropertyValueFactory<>("Athlete Total Score"));
+		
+		TableColumn<Triathlon, String> emergencyContactNameCol = new TableColumn<>("Emergency Contact Name");
+		emergencyContactNameCol.setCellValueFactory(new PropertyValueFactory<>("Emergency Contact Name"));
+		
+		TableColumn<Triathlon, String> emergencyContactNumberCol = new TableColumn<>("emergency Contact Number");
+		emergencyContactNumberCol.setCellValueFactory(new PropertyValueFactory<>("Emergency Contact Number"));
+		
+		
+		athletesTable.getColumns().addAll(lNameCol);
+		athletesTable.getColumns().addAll(fNameCol);		
+		athletesTable.getColumns().addAll(genderCol);
+		athletesTable.getColumns().addAll(athleteNumberCol);
+		athletesTable.getColumns().addAll(athletePhoneNumberCol);
+		athletesTable.getColumns().addAll(athleteEmailCol);
+		athletesTable.getColumns().addAll(athleteSwimmingScoreCol);
+		athletesTable.getColumns().addAll(athleteBikingScoreCol);
+		athletesTable.getColumns().addAll(athleteRunningScoreCol);
+		athletesTable.getColumns().addAll(athleteTotalScoreCol);
+		athletesTable.getColumns().addAll(emergencyContactNameCol);
+		athletesTable.getColumns().addAll(emergencyContactNumberCol);
+		
+		athletesTable.getItems().addAll(databaseConnection.getAthletesInfo());
+		
+		// Load fxml
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Triathlon_AthleteTableGUI.class.getResource("RootLayout.fxml"));
+	
+		try {
+			rootLayout = (BorderPane) loader.load();
+		} catch (IOException exception) {
+
+			exception.printStackTrace();
+		}
+		
+		Scene scene = new Scene(rootLayout);
+		primaryStage.setScene(scene);
+		primaryStage.show();
+		rootLayout.setCenter(athletesTable);
+			
+	}
+	public void showDataEntry(ActionEvent event) throws Exception {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
+					"dataEntry.fxml"));
+			Parent dataentryRoot = (Parent) fxmlLoader.load();
+			Stage stage = new Stage();
+			stage.setScene(new Scene(dataentryRoot));
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		   }
+	}
+	
+	public void closeDbase() throws Exception{
+		
+		if (databaseConnection != null){
+			databaseConnection.shutdown();
+		}
+	}
+	public static void main(String[] args){
+	
+		launch(args);
+	}
+}
