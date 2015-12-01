@@ -1,7 +1,6 @@
-package ares_kheneahm;
+package deng;
 
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,16 +19,11 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
 import java.util.Queue;
+//import javafx.scene.layout.AnchorPane;
+//import javafx.scene.layout.BorderPane;
+//import javafx.stage.Stage;
 
-import database_triatholon.Triatholon_Main;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
-
-public class Athlete extends Application
+public class Athlete //extends Application
 {
 	
 	public Athlete()
@@ -60,9 +54,9 @@ public class Athlete extends Application
 	private static int hours;
 	private static int minutes;
 	private static int seconds;
-	private Stage primaryStage;
-	private BorderPane rootLayout;
-	private AnchorPane controlData;
+	//private Stage primaryStage;
+	//private BorderPane rootLayout;
+	//private AnchorPane controlData;
 	
 	public String[][] getAthletesData()
 	{
@@ -436,9 +430,7 @@ public class Athlete extends Application
 			int amountOfAthletes, int[] athleteNumbers)
 	{
 		Scanner userInput = new Scanner(System.in);
-		/*
-		 * 
-		 */
+		
 		String firstName = ""; 
 		String lastName = "";
 		String gender = "";
@@ -698,9 +690,7 @@ public class Athlete extends Application
 					" Athlete Number: " + gs[j] + " Swimming: " + 
 			change(swimmingTimes.get(gs[j])) + " Biking: " + change(bikingTimes.get(gs[j])) + " Running: " + 
 					change(runningTimes.get(gs[j])) + " Total: " + change(athletesTotalTime.get(gs[j])));
-			}
-			
-				
+			}				
 		}
 		Iterator<Integer> ii = dq.iterator();
 		while (ii.hasNext())
@@ -838,7 +828,8 @@ public class Athlete extends Application
 //		insertAllAthletes(sortedTotalFemale, firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimesFemale, bikingTimesFemale, runningTimesFemale, correctedAthleteNumbersFemale, 0);
 
 		
-		launch(args);
+		//launch(args);
+		userInput.close();
 	}
 
 	private static void insertAllAthletes(Map<Integer, Double> sortedTotalTime,
@@ -848,29 +839,19 @@ public class Athlete extends Application
 			Map<Integer, Double> swimmingTimes,
 			Map<Integer, Double> bikingTimes,
 			Map<Integer, Double> runningTimes,
-			int[] correctedAthleteNumbers) throws SQLException {
+			int[] correctedAthleteNumbers) throws SQLException
+	{
 		
 		Connection csc3610conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ath_info", "root", "password");
-		for (int j = 0; j < (sortedTotalTime.size()); j++) {
-			if (sortedTotalTime.size() >= 1)
+		for (int j = 0; j < (sortedTotalTime.size()); j++)
 		{
-			if (swimmingTimes.get(correctedAthleteNumbers[j]) >= 60 || bikingTimes.get(correctedAthleteNumbers[j]) >= 60 || runningTimes.get(correctedAthleteNumbers[j]) >= 60)
+			if (sortedTotalTime.size() >= 1)
 			{
-				if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Male")) {
-				String query = "INSERT INTO male_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
-						"Values(?,?,?,?,?,?,?,?)";
-				PreparedStatement stmt = csc3610conn.prepareStatement(query);
-				stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
-				stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
-				stmt.setLong(3, correctedAthleteNumbers[j]);
-				stmt.setString(4, "Disqualified");
-				stmt.setString(5, "Disqualified");
-				stmt.setString(6, "Disqualified");
-				stmt.setString(6, "Disqualified");
-				stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
-				}
-				if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Female")) {
-					String query = "INSERT INTO female_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
+				if (swimmingTimes.get(correctedAthleteNumbers[j]) >= 60 || bikingTimes.get(correctedAthleteNumbers[j]) >= 60 || runningTimes.get(correctedAthleteNumbers[j]) >= 60)
+				{
+					if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Male"))
+					{
+					String query = "INSERT INTO male_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
 							"Values(?,?,?,?,?,?,?,?)";
 					PreparedStatement stmt = csc3610conn.prepareStatement(query);
 					stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
@@ -881,59 +862,65 @@ public class Athlete extends Application
 					stmt.setString(6, "Disqualified");
 					stmt.setString(6, "Disqualified");
 					stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
+					}
+					if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Female"))
+					{
+						String query = "INSERT INTO female_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
+								"Values(?,?,?,?,?,?,?,?)";
+						PreparedStatement stmt = csc3610conn.prepareStatement(query);
+						stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
+						stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
+						stmt.setLong(3, correctedAthleteNumbers[j]);
+						stmt.setString(4, "Disqualified");
+						stmt.setString(5, "Disqualified");
+						stmt.setString(6, "Disqualified");
+						stmt.setString(6, "Disqualified");
+						stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
+					}
 				}
-
-				}
-			else
-			{			
-				if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Male")) {
-				String query = "INSERT INTO male_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
-						"Values(?,?,?,?,?,?,?,?)";
-				PreparedStatement stmt = csc3610conn.prepareStatement(query);
-				stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
-				stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
-				stmt.setLong(3, correctedAthleteNumbers[j]);
-				stmt.setString(4, change(runningTimes.get(correctedAthleteNumbers[j])));
-				stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[j])));
-				stmt.setString(6, change(swimmingTimes.get(correctedAthleteNumbers[j])));
-				stmt.setString(7, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
-				stmt.setString(8, "Male");
-		
-				stmt.execute();
+				else
+				{			
+					if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Male"))
+					{
+						String query = "INSERT INTO male_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
+								"Values(?,?,?,?,?,?,?,?)";
+						PreparedStatement stmt = csc3610conn.prepareStatement(query);
+						stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
+						stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
+						stmt.setLong(3, correctedAthleteNumbers[j]);
+						stmt.setString(4, change(runningTimes.get(correctedAthleteNumbers[j])));
+						stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[j])));
+						stmt.setString(6, change(swimmingTimes.get(correctedAthleteNumbers[j])));
+						stmt.setString(7, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
+						stmt.setString(8, "Male");
 				
-
+						stmt.execute();
+					}
+					if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Female")) 
+					{
+						String query = "INSERT INTO female_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
+								"Values(?,?,?,?,?,?,?,?)";
+						PreparedStatement stmt = csc3610conn.prepareStatement(query);
+						stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
+						stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
+						stmt.setLong(3, correctedAthleteNumbers[j]);
+						stmt.setString(4, change(runningTimes.get(correctedAthleteNumbers[j])));
+						stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[j])));
+						stmt.setString(6, change(swimmingTimes.get(correctedAthleteNumbers[j])));
+						stmt.setString(7, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
+						stmt.setString(8, "Female");
+						
+						stmt.execute();
+	
+					}	
 				}
-				if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Female")) {
-					String query = "INSERT INTO female_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
-							"Values(?,?,?,?,?,?,?,?)";
-					PreparedStatement stmt = csc3610conn.prepareStatement(query);
-					stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
-					stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
-					stmt.setLong(3, correctedAthleteNumbers[j]);
-					stmt.setString(4, change(runningTimes.get(correctedAthleteNumbers[j])));
-					stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[j])));
-					stmt.setString(6, change(swimmingTimes.get(correctedAthleteNumbers[j])));
-					stmt.setString(7, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
-					stmt.setString(8, "Female");
-					
-					stmt.execute();
-
-				}
-					
 			}
 		}
-		}
-		
-	}
-		
-		
-
-		
+	}		
 	
 	private static Map<Integer, Double> sortMap(Map<Integer, Double> unsorted)
 	{
 		List<Double> list = new ArrayList<Double>(unsorted.values());
-		
 		
 		Collections.sort(list, new Comparator<Double>() 
 				{
@@ -1034,7 +1021,7 @@ public class Athlete extends Application
 			return hours + ":" + minutes + ":" + seconds;
 		}
 	}
-	
+	/**
 	@Override
 	public void start(Stage primaryStage) throws Exception{
 		
@@ -1072,5 +1059,5 @@ public class Athlete extends Application
 		primaryStage.setScene(scn);
 		primaryStage.show();
 	}
-	
+	*/
 }
