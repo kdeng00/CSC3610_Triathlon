@@ -1,5 +1,6 @@
-import java.io.IOException;
+package deng;
 
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -9,8 +10,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
-public class Triatholon_Controller {
-	
+public class Triathlon_Controller {
+	/**
 	@FXML
 	private MenuItem menuClose;
 	@FXML
@@ -44,7 +45,7 @@ public class Triatholon_Controller {
 	private BorderPane rootLayout;
 	private AnchorPane controlData;
 	
-	public Triatholon_Controller() throws IOException{
+	public Triathlon_Controller() throws IOException{
 		
 	}
 	
@@ -71,10 +72,6 @@ public class Triatholon_Controller {
 		menuClose.setOnAction((e) -> {
 			System.exit(0);
 		});
-		
-		
-		
-		
 	}
-
+	*/
 }
