@@ -1,10 +1,12 @@
+package deng;
+
 
 public class Biking extends Athlete{
 	
 	private double bikeTimeInMinutes; //This is used for converting the double into something legible
 	private double bikeTimeInSeconds; //This is used for converting the double into something legible
 	private double generatedTime;
-	final private int fastestbikingTimeInMinutes = 20;
+	final private int fastestBikingTimeInMinutes = 20;
 	
 	public Biking() {
 		
@@ -37,7 +39,7 @@ public class Biking extends Athlete{
 	public void generateRandomTime()
 	{
 		//Generates a random time greater than or equal to 39 but less than 89
-		generatedTime = fastestbikingTimeInMinutes + (Math.random() * 40);
+		generatedTime = fastestBikingTimeInMinutes + (Math.random() * 40);
 		generatedTime = Math.round(generatedTime * 100)/100.0; //Returns a value to the hundredths position
 	}
 	//Returns the generated random time
@@ -45,6 +47,4 @@ public class Biking extends Athlete{
 	{
 		return generatedTime;
 	}
-
-
 }
