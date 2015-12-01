@@ -1,9 +1,11 @@
+package deng;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Triatholon_Info {
+public class Triathlon_Info {
 	
-	public Triatholon_Info () {
+	public Triathlon_Info () {
 		
 	}
 
@@ -128,7 +130,7 @@ public class Triatholon_Info {
 	public final void setRank(String rank) {
 		RankProperty().set(rank);
 	}
-	public Triatholon_Info(String FirstNames, String LastNames, String Number, String RunTime, String BikeTime, String SwimTime,
+	public Triathlon_Info(String FirstNames, String LastNames, String Number, String RunTime, String BikeTime, String SwimTime,
 			String TotalTime, String Gender, String Rank) {
 		setFirstNames(FirstNames);
 		setLastNames(LastNames);
@@ -139,10 +141,5 @@ public class Triatholon_Info {
 		setTotal(TotalTime);
 		setGender(Gender);
 		setRank(Rank);
-		
 	}
-	
-	
-	
 }
-
