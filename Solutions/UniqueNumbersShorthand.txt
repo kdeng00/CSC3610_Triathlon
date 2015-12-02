@@ -1,17 +1,25 @@
 // Shorthand code to assign unique numbers to runners. I'm not entirely sure how
 // Java interacts with MySQL, though, so the exact commands are unknown to me.
+// That said, it seems to mostly be commands related to the ResultSet interface...
 
 boolean condition = false;
 while(condition == false)
 {
 	int rand = randomNumber();
 
-	// MySQL command:
-	select Number from [table name] where Number = rand
+	// MySQL command: " select Number from [table name] where Number = rand "
+	ResultSet rs = [ result set contains contents of MYSQL command "select Number from [table name] where Number = " + rand + ";"; ]
 
-	if records found == 0
+
+	// rs.getFetchSize should read the query size from the result set. If it is 0, the number has yet to be taken.
+	
+	if(rs.getFetchSize() == 0)
 	{
-		[athlete at postion is assigned number]
+		[athlete at postion is assigned number] // Select and update? Or check before adding to table?
 		condition = true;
 	}
 }
+
+
+Check these ResultSet commands, including colomn/row selection and update commands...
+http://docs.oracle.com/javase/6/docs/api/java/sql/ResultSet.html
