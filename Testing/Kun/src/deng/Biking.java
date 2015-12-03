@@ -41,6 +41,7 @@ public class Biking extends Athlete{
 		//Generates a random time greater than or equal to 39 but less than 89
 		generatedTime = fastestBikingTimeInMinutes + (Math.random() * 40);
 		generatedTime = Math.round(generatedTime * 100)/100.0; //Returns a value to the hundredths position
+		//generatedTime = 61;
 	}
 	//Returns the generated random time
 	public double randomTime()
