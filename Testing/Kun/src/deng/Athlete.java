@@ -391,7 +391,7 @@ public class Athlete //extends Application
 	{
 		for (int i = 0; i < (theArray.length); i++)
 		{
-			theArray[i] = checkingDuplicatesInArray(theArray);
+			theArray[i] = 5;//checkingDuplicatesInArray(theArray);
 		}
 	}
 	//This returns a random integer that is not in the array
@@ -851,17 +851,17 @@ public class Athlete //extends Application
 				{
 					if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Male"))
 					{
-					String query = "INSERT INTO male_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
-							"Values(?,?,?,?,?,?,?,?)";
-					PreparedStatement stmt = csc3610conn.prepareStatement(query);
-					stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
-					stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
-					stmt.setLong(3, correctedAthleteNumbers[j]);
-					stmt.setString(4, "Disqualified");
-					stmt.setString(5, "Disqualified");
-					stmt.setString(6, "Disqualified");
-					stmt.setString(6, "Disqualified");
-					stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
+						String query = "INSERT INTO male_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
+								"Values(?,?,?,?,?,?,?,?)";
+						PreparedStatement stmt = csc3610conn.prepareStatement(query);
+						stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
+						stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
+						stmt.setLong(3, correctedAthleteNumbers[j]);
+						stmt.setString(4, "Disqualified");
+						stmt.setString(5, "Disqualified");
+						stmt.setString(6, "Disqualified");
+						stmt.setString(7, "Disqualified");
+						stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
 					}
 					if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Female"))
 					{
@@ -874,7 +874,7 @@ public class Athlete //extends Application
 						stmt.setString(4, "Disqualified");
 						stmt.setString(5, "Disqualified");
 						stmt.setString(6, "Disqualified");
-						stmt.setString(6, "Disqualified");
+						stmt.setString(7, "Disqualified");
 						stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
 					}
 				}
