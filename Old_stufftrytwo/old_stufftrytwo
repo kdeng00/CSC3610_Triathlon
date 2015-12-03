@@ -1,0 +1,60 @@
+package tryMe;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+import java.util.ArrayList;
+
+public class Triathlon_DBConnect {
+
+	// Create variable to use for connecting
+	private Connection myConnection;
+	
+	//
+	public Triathlon_DBConnect(String url, String user, String password) 
+			throws SQLException{
+		
+		myConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/triathlon", "root", " ");
+	}
+	public void shutdown() throws SQLException{
+		if (myConnection != null){
+			myConnection.close();
+		}
+	}
+	public List<Triathlon> getAthletesInfo() throws SQLException{
+		
+		try(
+				Statement stmt = myConnection.createStatement();
+				ResultSet resultSet = stmt.executeQuery("select * from athletes_info");
+				
+				){
+			
+				List<Triathlon> athletesList = new ArrayList<>();
+				while (resultSet.next()){
+					
+				String lName = resultSet.getString("Last Name");
+				String fName = resultSet.getString("First Name");
+				String gender = resultSet.getString("Gender");
+				String athleteNumber = resultSet.getString("Athlete Number");
+				String athletePhoneNumber = resultSet.getString("Athlete Phone Number");
+				String athleteEmail = resultSet.getString("Athlete Email");
+				String athleteSwimmingScore = resultSet.getString("Athlete Swimming Score");
+				String athleteBikingScore = resultSet.getString("Athlete Biking Score");
+				String athleteRunningScore = resultSet.getString("Athlete Running Score");
+				String athleteTotalScore = resultSet.getString("Athlete Total Score");
+				String emergencyContactName = resultSet.getString("Emergency Contact Name");
+				String emergencyContactNumber = resultSet.getString("Emergency Contact Number ");
+				
+				Triathlon athletes = new Triathlon(lName, fName, gender, athleteNumber, athletePhoneNumber, 
+						athleteEmail, athleteSwimmingScore, athleteBikingScore, 
+						athleteRunningScore, athleteTotalScore, emergencyContactName, emergencyContactNumber);
+				athletesList.add(athletes);
+			}
+			return athletesList;
+			
+		}
+	}
+}
