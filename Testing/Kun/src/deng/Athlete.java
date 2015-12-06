@@ -4,7 +4,9 @@ package deng;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -391,7 +393,7 @@ public class Athlete //extends Application
 	{
 		for (int i = 0; i < (theArray.length); i++)
 		{
-			theArray[i] = 5;//checkingDuplicatesInArray(theArray);
+			theArray[i] = checkingDuplicatesInArray(theArray);
 		}
 	}
 	//This returns a random integer that is not in the array
@@ -702,16 +704,43 @@ public class Athlete //extends Application
 					"Disqualified " + " Total: " + "Disqualified");
 		}
 	}
-	
+	//Testing
+	public static void getAthleteNumbersFromDatabase() throws SQLException
+	{
+		
+		int arrg[] = new int[30];
+		int i = 0;
+		int j = 0;
+		Connection csc3610conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ath_info", "root", "password");
+		String query = "select * from female_info;";
+		
+		Statement stmt = csc3610conn.createStatement();
+		
+		ResultSet rs = stmt.executeQuery(query);
+		
+		while (rs.next())
+		{	
+			arrg[i] = rs.getInt("Number");
+			i++;
+		}
+		stmt.close();
+		while (j < arrg.length)
+		{
+			System.out.println(arrg[j]);
+			j++;
+		}
+	}
 	public static void main(String[] args) throws SQLException
 	{
 		Scanner userInput = new Scanner(System.in);
-		
+		getAthleteNumbersFromDatabase();
 		System.out.print("How much athletes will there be: ");
 		
 		int amountOfAthletes = userInput.nextInt(); //You can change the amount of athletes here.
 		int[] athleteNumbers = new int[amountOfAthletes]; //Empty athlete numbers
 		int[] correctedAthleteNumbers = new int[amountOfAthletes];
+		int[] athleteNumbersFromDatabase;
+		
 		
 		
 		//Creating Map Objects
@@ -795,38 +824,22 @@ public class Athlete //extends Application
 				runningTimesMale, runningTimesFemale, total, totalFemales, totalMales, amountOfAthletes, 
 				athleteNumbers);
 		
-		//System.out.println("Males : " + totalMales.size() + " Females: " + totalFemales.size());
-		
 		int[] correctedAthleteNumbersMale = new int[totalMales.size()];
 		int[] correctedAthleteNumbersFemale = new int[totalFemales.size()];
-		
-		//Debugging stuff
-		//printAllAthletes(swimmingTimes, bikingTimes, runningTimes, total);
-		//System.out.println(firstNames.values());
 		
 		//Created a Map with the sorted times
 		Map<Integer, Double> sortedTotal = sortMap(total);
 		Map<Integer, Double> sortedTotalMale = sortMap(totalMales);
 		Map<Integer, Double> sortedTotalFemale = sortMap(totalFemales);
 		
-		
 		sortedTotal = swap(total, sortedTotal, athleteNumbers, correctedAthleteNumbers);
 		sortedTotalMale = swap(totalMales, sortedTotalMale, athleteNumbers, correctedAthleteNumbersMale);
 		sortedTotalFemale = swap(totalFemales, sortedTotalFemale, athleteNumbers, correctedAthleteNumbersFemale);
-		
 
 		printAllAthletes(sortedTotal, firstNames, lastNames, genders, swimmingTimes, bikingTimes, runningTimes, correctedAthleteNumbers);
 		
-//		System.out.println("\nTop Male: ");
-//		printAllAthletes(sortedTotalMale, firstNamesMale, lastNamesMale, gendersMale, swimmingTimesMale, bikingTimesMale, runningTimesMale, correctedAthleteNumbersMale, 0);
-//		
-//		System.out.println("\nTop Female: ");
-//		printAllAthletes(sortedTotalFemale, firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimesFemale, bikingTimesFemale, runningTimesFemale, correctedAthleteNumbersFemale, 0);
-		
-		
 		insertAllAthletes(sortedTotal, firstNames, lastNames, genders, swimmingTimes, bikingTimes, runningTimes, correctedAthleteNumbers);
-//		insertAllAthletes(sortedTotalFemale, firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimesFemale, bikingTimesFemale, runningTimesFemale, correctedAthleteNumbersFemale, 0);
-
+		
 		
 		//launch(args);
 		userInput.close();
@@ -845,76 +858,83 @@ public class Athlete //extends Application
 		Connection csc3610conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ath_info", "root", "password");
 		for (int j = 0; j < (sortedTotalTime.size()); j++)
 		{
-			if (sortedTotalTime.size() >= 1)
+			
+			if (swimmingTimes.get(correctedAthleteNumbers[j]) >= 60 || bikingTimes.get(correctedAthleteNumbers[j]) >= 60 || runningTimes.get(correctedAthleteNumbers[j]) >= 60)
 			{
-				if (swimmingTimes.get(correctedAthleteNumbers[j]) >= 60 || bikingTimes.get(correctedAthleteNumbers[j]) >= 60 || runningTimes.get(correctedAthleteNumbers[j]) >= 60)
+				if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Male"))
 				{
-					if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Male"))
-					{
-						String query = "INSERT INTO male_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
-								"Values(?,?,?,?,?,?,?,?)";
-						PreparedStatement stmt = csc3610conn.prepareStatement(query);
-						stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
-						stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
-						stmt.setLong(3, correctedAthleteNumbers[j]);
-						stmt.setString(4, "Disqualified");
-						stmt.setString(5, "Disqualified");
-						stmt.setString(6, "Disqualified");
-						stmt.setString(7, "Disqualified");
-						stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
-					}
-					if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Female"))
-					{
-						String query = "INSERT INTO female_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
-								"Values(?,?,?,?,?,?,?,?)";
-						PreparedStatement stmt = csc3610conn.prepareStatement(query);
-						stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
-						stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
-						stmt.setLong(3, correctedAthleteNumbers[j]);
-						stmt.setString(4, "Disqualified");
-						stmt.setString(5, "Disqualified");
-						stmt.setString(6, "Disqualified");
-						stmt.setString(7, "Disqualified");
-						stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
-					}
+					String query = "INSERT INTO male_info (FirstName, LastName, Number, SwimTime, BikeTime, RunTime, TotalTime, Gender, Disqualified)" +
+							"Values(?,?,?,?,?,?,?,?,?)";
+					PreparedStatement stmt = csc3610conn.prepareStatement(query);
+					stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
+					stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
+					stmt.setLong(3, correctedAthleteNumbers[j]);
+					stmt.setString(4, change(swimmingTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(6, change(runningTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(7, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
+					stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
+					stmt.setString(9, "Yes");
+					
+					stmt.execute();
 				}
 				else
-				{			
-					if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Male"))
-					{
-						String query = "INSERT INTO male_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
-								"Values(?,?,?,?,?,?,?,?)";
-						PreparedStatement stmt = csc3610conn.prepareStatement(query);
-						stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
-						stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
-						stmt.setLong(3, correctedAthleteNumbers[j]);
-						stmt.setString(4, change(runningTimes.get(correctedAthleteNumbers[j])));
-						stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[j])));
-						stmt.setString(6, change(swimmingTimes.get(correctedAthleteNumbers[j])));
-						stmt.setString(7, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
-						stmt.setString(8, "Male");
-				
-						stmt.execute();
-					}
-					if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Female")) 
-					{
-						String query = "INSERT INTO female_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
-								"Values(?,?,?,?,?,?,?,?)";
-						PreparedStatement stmt = csc3610conn.prepareStatement(query);
-						stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
-						stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
-						stmt.setLong(3, correctedAthleteNumbers[j]);
-						stmt.setString(4, change(runningTimes.get(correctedAthleteNumbers[j])));
-						stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[j])));
-						stmt.setString(6, change(swimmingTimes.get(correctedAthleteNumbers[j])));
-						stmt.setString(7, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
-						stmt.setString(8, "Female");
-						
-						stmt.execute();
-	
-					}	
+				{
+					String query = "INSERT INTO female_info (FirstName, LastName, Number, SwimTime, BikeTime, RunTime, TotalTime, Gender, Disqualified)" +
+							"Values(?,?,?,?,?,?,?,?,?)";
+					PreparedStatement stmt = csc3610conn.prepareStatement(query);
+					stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
+					stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
+					stmt.setLong(3, correctedAthleteNumbers[j]);
+					stmt.setString(4, change(swimmingTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(6, change(runningTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(7, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
+					stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
+					stmt.setString(9, "Yes");
+					
+					stmt.execute();
 				}
 			}
+			else
+			{			
+				if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Male"))
+				{
+					String query = "INSERT INTO male_info (FirstName, LastName, Number, SwimTime, BikeTime, RunTime, TotalTime, Gender, Disqualified)" +
+							"Values(?,?,?,?,?,?,?,?,?)";
+					PreparedStatement stmt = csc3610conn.prepareStatement(query);
+					stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
+					stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
+					stmt.setLong(3, correctedAthleteNumbers[j]);
+					stmt.setString(4, change(swimmingTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(6, change(runningTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(7, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
+					stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
+					stmt.setString(9, "No");
+			
+					stmt.execute();
+				}
+				else
+				{
+					String query = "INSERT INTO female_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender, Disqualified)" +
+							"Values(?,?,?,?,?,?,?,?,?)";
+					PreparedStatement stmt = csc3610conn.prepareStatement(query);
+					stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
+					stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
+					stmt.setLong(3, correctedAthleteNumbers[j]);
+					stmt.setString(4, change(swimmingTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(6, change(runningTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(7, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
+					stmt.setString(8, "Female");
+					stmt.setString(9, "No");
+					
+					stmt.execute();
+
+				}	
+			}
+			
 		}
 	}		
 	
@@ -1023,7 +1043,8 @@ public class Athlete //extends Application
 	}
 	/**
 	@Override
-	public void start(Stage primaryStage) throws Exception{
+	public void start(Stage primaryStage) throws Exception
+	{
 		
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Triatholon Results");
@@ -1032,7 +1053,8 @@ public class Athlete //extends Application
 		initializeRoot();
 		showControlsData();
 	}
-	private void showControlsData() {
+	private void showControlsData() 
+	{
 		FXMLLoader load = new FXMLLoader();
 		load.setLocation(Athlete.class.getResource("ControlData.fxml"));
 		
@@ -1044,7 +1066,8 @@ public class Athlete //extends Application
 		}
 		rootLayout.setCenter(controlData);
 	}
-	private void initializeRoot() {
+	private void initializeRoot() 
+	{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Athlete.class.getResource("RootLayout.fxml"));
 		
