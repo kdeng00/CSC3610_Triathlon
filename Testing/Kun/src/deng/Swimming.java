@@ -1,5 +1,8 @@
+package deng;
 
-public class Swimming extends Athlete{
+
+public class Swimming
+{
 	
 	private double swimTimeInMinutes; //This is used to convert the doubles into somtething legible
 	private double swimTimeInSeconds; //This is used to convert the doubles into something legible
@@ -46,7 +49,4 @@ public class Swimming extends Athlete{
 	{
 		return generatedTime;
 	}
-
-
-	
 }
