@@ -389,7 +389,7 @@ public class Athlete //extends Application
 		}
 	}
 	//This method populates the Array with random integers that are not already apart of the array.
-	public static void populatingArrayWithNoDuplicates(int[] theArray)
+	public static void populatingArrayWithNoDuplicates(int[] theArray) throws SQLException
 	{
 		for (int i = 0; i < (theArray.length); i++)
 		{
@@ -397,28 +397,38 @@ public class Athlete //extends Application
 		}
 	}
 	//This returns a random integer that is not in the array
-	public static int checkingDuplicatesInArray(int[] theArray)
+	public static int checkingDuplicatesInArray(int[] theArray) throws SQLException
 	{
+ 		int[] athleteNumbersFromDatabase = getAthleteNumbersFromDatabase();
+ 		//System.out.println("There are " + athleteNumbersFromDatabase.length + " athletes in the current Database.");
 		int random;
 		int loopItAgain; //determines if there is a duplicate number greater than 0
 		
 		while (true)
-	        {
-	            random = (int) (Math.random()*20);
-	            loopItAgain = 0;
-	            for (int i = 0; i < (theArray.length); i++)
-	            {
-	            	if (random == theArray[i])
+        {
+            random = ((int) (Math.random()*20)) + 1;
+            loopItAgain = 0;
+            for (int i = 0; i < (athleteNumbersFromDatabase.length); i++)
+            {
+            	if (i < theArray.length)
+            	{
+            		if (random == theArray[i])
 	            	{
 	            		loopItAgain++;
 	            	}
-	            }
-	
-	            if (loopItAgain == 0)
-	            {
-	                return random;
-	            }
-	        }
+            	}
+            	
+            	if (random == athleteNumbersFromDatabase[i])
+            	{
+            		loopItAgain++;
+            	}
+            }
+
+            if (loopItAgain == 0)
+            {
+                return random;
+            }
+        }
 	}
 	/* 
 	 * This is the assign method revised. I didn't bother removing the original assign method because it is good to keep
@@ -704,42 +714,67 @@ public class Athlete //extends Application
 					"Disqualified " + " Total: " + "Disqualified");
 		}
 	}
-	//Testing
-	public static void getAthleteNumbersFromDatabase() throws SQLException
+	
+	/*
+	 * Works Now. It captures all of the Athlete Numbers from both the male and female tables.
+	 * The Athlete Numbers is then put into an array and is checked to see if the random Integer number matches.
+	 * If the number matches the number inside the current array or the array with the Athlete Number then a new
+	 * Random number is chosen. If more info Is needed just let me know and I can explain further.
+	 */
+	public static int[] getAthleteNumbersFromDatabase() throws SQLException
 	{
-		
-		int arrg[] = new int[30];
+		Set<Integer> nmm = new HashSet<Integer>();
+		int arrg[];//= new int[5000]; //The Reason why this is so high is to make sure i
 		int i = 0;
-		int j = 0;
+		
 		Connection csc3610conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ath_info", "root", "password");
+		
 		String query = "select * from female_info;";
-		
 		Statement stmt = csc3610conn.createStatement();
-		
 		ResultSet rs = stmt.executeQuery(query);
 		
+		//Gets the female Athlete Numbers
 		while (rs.next())
 		{	
-			arrg[i] = rs.getInt("Number");
+			//arrg[i] = rs.getInt("Number");
+			nmm.add(rs.getInt("Number"));
 			i++;
 		}
-		stmt.close();
-		while (j < arrg.length)
+		
+		query = "select * from male_info;";
+		rs = stmt.executeQuery(query);
+		
+		//Gets the male Athlete Numbers
+		while (rs.next())
 		{
-			System.out.println(arrg[j]);
-			j++;
+			//arrg[i] = rs.getInt("Number");
+			nmm.add(rs.getInt("Number"));
+			i++;
 		}
+		
+		stmt.close();
+		
+		Iterator<Integer> itIt = nmm.iterator();
+		//arrg[] = new int[nmm.size()];
+		arrg = new int[nmm.size()];
+		i = 0;
+		while (itIt.hasNext())
+		{
+			arrg[i] = (int) itIt.next();
+		}
+		
+		
+		return arrg;
 	}
 	public static void main(String[] args) throws SQLException
 	{
 		Scanner userInput = new Scanner(System.in);
-		getAthleteNumbersFromDatabase();
+		//getAthleteNumbersFromDatabase();
 		System.out.print("How much athletes will there be: ");
 		
 		int amountOfAthletes = userInput.nextInt(); //You can change the amount of athletes here.
 		int[] athleteNumbers = new int[amountOfAthletes]; //Empty athlete numbers
 		int[] correctedAthleteNumbers = new int[amountOfAthletes];
-		int[] athleteNumbersFromDatabase;
 		
 		
 		
@@ -934,7 +969,6 @@ public class Athlete //extends Application
 
 				}	
 			}
-			
 		}
 	}		
 	
