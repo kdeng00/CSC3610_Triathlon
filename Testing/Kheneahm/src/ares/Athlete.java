@@ -393,7 +393,7 @@ public class Athlete extends Application
 		}
 	}
 	//This method populates the Array with random integers that are not already apart of the array.
-	public static void populatingArrayWithNoDuplicates(int[] theArray)
+	public static void populatingArrayWithNoDuplicates(int[] theArray) throws SQLException
 	{
 		for (int i = 0; i < (theArray.length); i++)
 		{
@@ -401,28 +401,80 @@ public class Athlete extends Application
 		}
 	}
 	//This returns a random integer that is not in the array
-	public static int checkingDuplicatesInArray(int[] theArray)
+	public static int checkingDuplicatesInArray(int[] theArray) throws SQLException
 	{
+		int[] athleteNumbersFromDatabase = getAthleteNumbersFromDatabase();
 		int random;
 		int loopItAgain; //determines if there is a duplicate number greater than 0
 		
 		while (true)
 	        {
-	            random = (int) (Math.random()*20);
+	            random = (int) (Math.random()*2000 +10);
 	            loopItAgain = 0;
-	            for (int i = 0; i < (theArray.length); i++)
+	             for (int i = 0; i < (athleteNumbersFromDatabase.length); i++)
 	            {
-	            	if (random == theArray[i])
+	            	if (i < theArray.length)
+	            	{
+	            		if (random == theArray[i])
+		            	{
+		            		loopItAgain++;
+		            	}
+	            	}
+	            if (random == athleteNumbersFromDatabase[i])
 	            	{
 	            		loopItAgain++;
 	            	}
-	            }
 	
 	            if (loopItAgain == 0)
 	            {
 	                return random;
 	            }
 	        }
+	}
+	public static int[] getAthleteNumbersFromDatabase() throws SQLException
+	{
+		Set<Integer> nmm = new HashSet<Integer>();
+		int arrg[];//= new int[5000]; //The Reason why this is so high is to make sure i
+		int i = 0;
+		
+		Connection csc3610conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ath_info", "root", "password");
+		
+		String query = "select * from female_info;";
+		Statement stmt = csc3610conn.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		
+		//Gets the female Athlete Numbers
+		while (rs.next())
+		{	
+			//arrg[i] = rs.getInt("Number");
+			nmm.add(rs.getInt("Number"));
+			i++;
+		}
+		
+		query = "select * from male_info;";
+		rs = stmt.executeQuery(query);
+		
+		//Gets the male Athlete Numbers
+		while (rs.next())
+		{
+			//arrg[i] = rs.getInt("Number");
+			nmm.add(rs.getInt("Number"));
+			i++;
+		}
+		
+		stmt.close();
+		
+		Iterator<Integer> itIt = nmm.iterator();
+		//arrg[] = new int[nmm.size()];
+		arrg = new int[nmm.size()];
+		i = 0;
+		while (itIt.hasNext())
+		{
+			arrg[i] = (int) itIt.next();
+		}
+		
+		
+		return arrg;
 	}
 	/* 
 	 * This is the assign method revised. I didn't bother removing the original assign method because it is good to keep
