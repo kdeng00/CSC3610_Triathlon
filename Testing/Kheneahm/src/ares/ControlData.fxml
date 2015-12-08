@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ares_kheneahm.Triatholon_Controller">
+   <children>
+      <TableView fx:id="tblMale" layoutX="39.0" layoutY="98.0" onSort="#initialize" prefHeight="260.0" prefWidth="1103.0">
+        <columns>
+          <TableColumn fx:id="placeMale" onEditStart="#initialize" prefWidth="63.0" text="Place" />
+          <TableColumn fx:id="numberMale" onEditStart="#initialize" prefWidth="70.0" text="Race No." />
+            <TableColumn fx:id="firstNameMale" onEditStart="#initialize" prefWidth="141.0" text="First Name" />
+            <TableColumn fx:id="lastNameMale" onEditStart="#initialize" prefWidth="126.0" text="Last Name" />
+            <TableColumn fx:id="runTimeMale" onEditStart="#initialize" prefWidth="100.0" text="Run Time" />
+            <TableColumn fx:id="runSpeedMale" onEditStart="#initialize" prefWidth="117.0" text="Run Speed" />
+            <TableColumn fx:id="swimTimeMale" onEditStart="#initialize" prefWidth="83.0" text="Swim Time" />
+            <TableColumn fx:id="swimSpeedMale" onEditStart="#initialize" prefWidth="120.0" text="Swim Per 100 M" />
+            <TableColumn fx:id="bikeTimeMale" onEditStart="#initialize" prefWidth="97.0" text="Bike Time" />
+            <TableColumn fx:id="bikeSpeedMale" onEditStart="#initialize" prefWidth="83.0" text="Bike Split" />
+            <TableColumn fx:id="totalTimeMale" onEditStart="#initialize" prefWidth="100.0" text="Final Time" />
+        </columns>
+      </TableView>
+      <MenuBar maxWidth="1.7976931348623157E308" prefHeight="29.0" prefWidth="1200.0" snapToPixel="false">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="menuUpdate" mnemonicParsing="false" onAction="#initialize" text="Update Database" />
+                  <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#initialize" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <TableView fx:id="tblFemale" layoutX="39.0" layoutY="392.0" onSort="#initialize" prefHeight="260.0" prefWidth="1103.0">
+         <columns>
+            <TableColumn fx:id="placeFemale" onEditStart="#initialize" prefWidth="63.0" text="Place" />
+            <TableColumn fx:id="numberFemale" onEditStart="#initialize" prefWidth="70.0" text="Race No." />
+            <TableColumn fx:id="firstNameFemale" onEditStart="#initialize" prefWidth="141.0" text="First Name" />
+            <TableColumn fx:id="lastNameFemale" onEditStart="#initialize" prefWidth="126.0" text="Last Name" />
+            <TableColumn fx:id="runTimeFemale" onEditStart="#initialize" prefWidth="100.0" text="Run Time" />
+            <TableColumn fx:id="runSpeedFemale" onEditStart="#initialize" prefWidth="117.0" text="Run Speed" />
+            <TableColumn fx:id="swimTimeFemale" onEditStart="#initialize" prefWidth="83.0" text="Swim Time" />
+            <TableColumn fx:id="swimSpeedFemale" onEditStart="#initialize" prefWidth="120.0" text="Swim Per 100 M" />
+            <TableColumn fx:id="bikeTimeFemale" onEditStart="#initialize" prefWidth="100.0" text="Bike Time" />
+            <TableColumn fx:id="bikeSpeedFemale" onEditStart="#initialize" text="Bike Split" />
+            <TableColumn fx:id="totalTimeFemale" onEditStart="#initialize" prefWidth="100.0" text="Final Time" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>
