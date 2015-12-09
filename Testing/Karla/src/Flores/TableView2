@@ -1,0 +1,205 @@
+package final_project;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+//import database.AU_emp;
+
+public class Triathlon_DBaseDriver {
+
+	private Connection csc3610conn;
+	public Triathlon_DBaseDriver(String dbURL, String user, String password) throws SQLException, ClassNotFoundException{
+		
+		Class.forName("org.mariadb.jdbc.Driver");//here change this for: "org.mariadb.jdbc.Driver---It complains about class 'name' not found"
+		csc3610conn = DriverManager.getConnection(
+				"jdbc:mysql://localhost:3606/Triatholon_Info", "root", "password");
+	}
+
+	public void shutdown() throws SQLException {
+		if (csc3610conn != null) {
+			csc3610conn.close();
+		}
+	}
+	/*
+	//-----I jus added this to chack if my one of the problems I Does Not Worked
+	public void addAthlete1(Triatholon_Info atlete) throws SQLException{
+		PreparedStatement athleteStmt = csc3610conn.prepareStatement("INSERT INTO Triathlon_Info(FirstNames,Lastnames, Number,"
+				+ "RunTime, BikeTime, SwimTime, TotalTime, Gender, Rank)"+ "VALUES(?,?,?,?,?,?,?,?,?)");
+		
+		athleteStmt.setString(1, athlete.getFirstNames());
+		athleteStmt.setString(2, athlete.getLastNames());
+		athleteStmt.setString(3, athlete.getNumber());
+		athleteStmt.setString(4, athlete.getRunTime());
+		athleteStmt.setString(5, athlete.getBikeTime());
+		athleteStmt.setString(6, athlete.getSwimTime());
+		athleteStmt.setString(7, athlete.getTotalTime());
+		athleteStmt.setString(8, athlete.getGender());
+		athleteStmt.setString(9, athlete.getRank());
+		
+		
+	}
+	**/
+	//----------------------------The added stuff stops here
+    //Method that gets the info for males in the database
+	public List<Triatholon_Info> getMaleAthleteInfo() throws SQLException {
+		
+		List<Triatholon_Info> athList = new ArrayList<>();
+		
+		try {
+				Statement stmt = csc3610conn.createStatement();
+				ResultSet rs = stmt.executeQuery("select * from male_athletes");
+				
+			
+				while (rs.next()) {
+
+				String FirstNames = rs.getString("FirstName");
+				String LastNames = rs.getString("LastName");
+				String Number = rs.getString("Number");
+				String RunTime = rs.getString("RunTime");
+				String BikeTime = rs.getString("BikeTime");
+				String SwimTime = rs.getString("SwimTime");
+				String TotalTime = rs.getString("TotalTime");
+				String Gender = rs.getString("Gender");
+				String Rank = rs.getString("Rank");
+
+				Triatholon_Info athInfo = new Triatholon_Info(FirstNames,
+						LastNames, Number, RunTime, BikeTime, SwimTime,
+						TotalTime, Gender, Rank);
+				athList.add(athInfo);
+				}
+				
+		} catch(Exception ex){
+			ex.printStackTrace();
+		}
+			return athList;
+	}
+
+
+	// Method for females that gets the info for then in the database
+	public List<Triatholon_Info> getFemaleAthleteInfo() throws SQLException {
+		
+		List<Triatholon_Info> athleteList = new ArrayList<>();
+		
+		try {
+				Statement stmt = csc3610conn.createStatement();
+				ResultSet rs = stmt.executeQuery("select * from female_athletes");
+			
+			while (rs.next()) {
+				String FirstNames = rs.getString("FirstName");
+				String LastNames = rs.getString("LastName");
+				String Number = rs.getString("Number");
+				String RunTime = rs.getString("RunTime");
+				String BikeTime = rs.getString("BikeTime");
+				String SwimTime = rs.getString("SwimTime");
+				String TotalTime = rs.getString("TotalTime");
+				String Gender = rs.getString("Gender");
+				String Rank = rs.getString("Rank");
+
+				Triatholon_Info athletes = new Triatholon_Info(FirstNames,
+						LastNames, Number, RunTime, BikeTime, SwimTime,
+						TotalTime, Gender, Rank);
+				
+				athleteList.add(athletes);
+				}
+			
+				}catch(Exception ex){
+			
+				 ex.printStackTrace();	
+				}
+			return athleteList;
+}
+	
+	// Add athletes
+	public void addAthlete(Triatholon_Info athlete) throws SQLException
+		{
+	
+		PreparedStatement athleteStatement = csc3610conn.prepareStatement(" INSERT INTO emp_info (FirstNames, LastNames, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender,Rank)" + 
+		" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			athleteStatement.setString(1, athlete.getFirstNames());
+			athleteStatement.setString(2, athlete.getLastNames());
+			athleteStatement.setString(3, athlete.getNumber());
+			athleteStatement.setString(4,  athlete.getRunTime());
+			athleteStatement.setString(5, athlete.getBikeTime());
+			athleteStatement.setString(6, athlete.getSwimTime());
+			athleteStatement.setString(7, athlete.getTotalTime());
+			athleteStatement.setString(8,  athlete.getGender());
+			athleteStatement.setString(9, athlete.getRank());
+		
+			athleteStatement.executeUpdate();
+		
+	}
+		
+}
+	
+
+
+
+
+
+
+
+
+	/*
+	// Male_atheltes Method 
+	public List<Triatholon_Info> getMale_athletes() throws SQLException {
+		try (Statement stmt = csc3610conn.createStatement();
+				ResultSet rs = stmt
+						.executeQuery("select * from male_athletes")
+
+		) {
+			List<Triatholon_Info> athleteList = new ArrayList<>();
+			while (rs.next()) {// it keeps going while true
+				String FirstNames = rs.getString("FirstName");
+				String LastName = rs.getString("LastName");
+				String Number = rs.getString("Number");
+				String RunTime = rs.getString("RunTime");
+				String BikeTime = rs.getString("BikeTime");
+				String SwimTime = rs.getString("Swimtime");
+				String TotalTime = rs.getString("TotalTime");
+				String Gender = rs.getString("Gender");
+				String Rank = rs.getString("Rank");
+
+				//
+				Triatholon_Info athletes = new Triatholon_Info(FirstNames,
+						LastName, Number, RunTime, BikeTime, SwimTime,
+						TotalTime, Gender, Rank);
+				athleteList.add(athletes);
+			}
+			return athleteList;
+		}
+
+	}
+
+	public List<Triatholon_Info> getFemale_athletes() throws SQLException {
+		
+		try(Statement stmt = csc3610conn.createStatement();
+				ResultSet rs = stmt.executeQuery("select * from female_athletes")
+				){
+			List<Triatholon_Info> athleteList = new ArrayList<>();
+			while(rs.next()){
+				String FirstNames = rs.getString("FirstName");
+				String LastName = rs.getString("LastName");
+				String Number = rs.getString("Number");
+				String RunTime = rs.getString("RunTime");
+				String BikeTime = rs.getString("BikeTime");
+				String SwimTime = rs.getString("Swimtime");
+				String TotalTime = rs.getString("TotalTime");
+				String Gender = rs.getString("Gender");
+				String Rank = rs.getString("Rank");
+				
+				
+				}
+		}
+}
+**/
+				
+				
+		
+	
+
