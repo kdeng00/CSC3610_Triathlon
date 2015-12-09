@@ -1,0 +1,120 @@
+Triathlon_DBaseDriver.java
+Triathlon_EntryBox.java
+Triathlon_TableView.java
+Triatholon_Info.java
+-----------------------------------------------
+package final_project;
+
+import java.sql.DriverManager;
+
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
+public class Triathlon_TableView extends Application {
+	private Triathlon_DBaseDriver dbaseConnection;
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		// dbaseConnection = new
+		// AU_DBaseDriver("jdbc:mysql://localhost:3306/au_staff", "root", "");
+		dbaseConnection = new Triathlon_DBaseDriver(
+				"jdbc:mysql://localhost:3306/Triatholon_Info", "root", "password");
+
+		TableView<Triatholon_Info> athleteTable = new TableView<Triatholon_Info>();
+		MenuBar menu = new MenuBar();
+		Menu menuFile = new Menu("File");
+		Menu menuEdit = new Menu("Edit");
+		Menu menuHelp = new Menu("Help");
+		MenuItem addData = new MenuItem("Data Entry");
+		MenuItem exit = new MenuItem("Exit");
+		menuFile.getItems().addAll(addData, exit);
+		menu.getMenus().addAll(menuFile, menuEdit, menuHelp);
+
+		TableColumn<Triatholon_Info, String> emp_firstNameCol = new TableColumn<Triatholon_Info, String>("First Name");
+		emp_firstNameCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("FirstNames"));
+		
+		TableColumn<Triatholon_Info, String> emp_lastName = new TableColumn<Triatholon_Info, String>("Last Name");
+		emp_lastName.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("LastNames"));
+		
+		TableColumn<Triatholon_Info, String> emp_NumberCol = new TableColumn<Triatholon_Info, String>("Number");
+		emp_NumberCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("Number"));
+		
+		TableColumn<Triatholon_Info, String> emp_runTimeCol = new TableColumn<Triatholon_Info, String>("Run Time");
+		emp_runTimeCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("RunTime"));
+
+		TableColumn<Triatholon_Info, String> emp_bikeTimeCol = new TableColumn<Triatholon_Info, String>("Bike Time");
+		emp_bikeTimeCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("BikeTime"));
+		
+		TableColumn<Triatholon_Info, String> emp_swimTimeCol = new TableColumn<Triatholon_Info, String>("Swim Time");
+		emp_swimTimeCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("SwimTime"));
+		
+		TableColumn<Triatholon_Info, String> emp_totalTimeCol = new TableColumn<Triatholon_Info, String>("Total Time");
+		emp_totalTimeCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("TotalTime"));
+		
+		TableColumn<Triatholon_Info, String> emp_genderCol = new TableColumn<Triatholon_Info, String>("Gender");
+		emp_genderCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("Gender"));
+
+		TableColumn<Triatholon_Info, String> emp_rankCol = new TableColumn<Triatholon_Info, String>("Rank");
+		emp_rankCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("Rank"));
+		
+
+		
+		
+		 
+		//athleteTable.getColumns().addAll(emp_firstNameCol, emp_lastName, emp_NumberCol, emp_runTimeCol,
+			//	emp_bikeTimeCol, emp_swimTimeCol, emp_totalTimeCol, emp_genderCol, emp_rankCol);
+
+		athleteTable.getItems().addAll(dbaseConnection.getFemaleAthleteInfo());//
+
+		BorderPane root = new BorderPane();
+		root.setCenter(athleteTable);
+		root.setTop(menu);
+		Scene scene = new Scene(root, 575, 500);
+		primaryStage.setScene(scene);
+		primaryStage.show();
+
+		addData.setOnAction(event -> {
+			Triatholon_Info newAthlete = Triathlon_EntryBox.display();
+
+			try {
+				dbaseConnection.addAthlete(newAthlete);// pass the newAthlete object from the entry box
+			} catch (Exception e) {
+				System.out.println("Error Adding Employee");
+			}
+			athleteTable.getItems().clear();
+			try {
+				athleteTable.getItems().addAll(
+						dbaseConnection.getMaleAthleteInfo());
+						//getTriatholon_Info());// same problem
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		exit.setOnAction(event -> {
+			Platform.exit();
+		});
+
+	}
+
+	public void closeDbase() throws Exception {
+
+		if (dbaseConnection != null) {
+			dbaseConnection.shutdown();
+		}
+	}
+
+	public static void main(String[] args) {
+
+		launch(args);
+	}
+
+}
