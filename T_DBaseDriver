@@ -1,0 +1,555 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Triathlon_DBaseDriver {
+
+	private Connection csc3610conn;
+	public Triathlon_DBaseDriver(String dbURL, String user, String password) throws SQLException{
+		
+		csc3610conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Triatholon_Info", "root", "password");
+	}
+
+	public void shutdown() throws SQLException {
+		if (csc3610conn != null) {
+			csc3610conn.close();
+		}
+	}
+    //Method that gets the info for males in the database
+	public List<Triatholon_Info> getMaleAthleteInfo() throws SQLException {
+		
+		List<Triatholon_Info> athList = new ArrayList<>();
+		
+		try {
+				Statement stmt = csc3610conn.createStatement();
+				ResultSet rs = stmt.executeQuery("select * from male_athletes");
+				
+			
+				while (rs.next()) {
+
+				String FirstNames = rs.getString("FirstName");
+				String LastNames = rs.getString("LastName");
+				String Number = rs.getString("Number");
+				String RunTime = rs.getString("RunTime");
+				String BikeTime = rs.getString("BikeTime");
+				String SwimTime = rs.getString("SwimTime");
+				String TotalTime = rs.getString("TotalTime");
+				String Gender = rs.getString("Gender");
+				String Rank = rs.getString("Rank");
+
+				Triatholon_Info athInfo = new Triatholon_Info(FirstNames,
+						LastNames, Number, RunTime, BikeTime, SwimTime,
+						TotalTime, Gender, Rank);
+				athList.add(athInfo);
+				}
+				
+		} catch(Exception ex){
+			ex.printStackTrace();
+		}
+			return athList;
+	}
+
+
+	// Method for females that gets the info for then in the database
+	public List<Triatholon_Info> getFemaleAthleteInfo() throws SQLException {
+		
+		List<Triatholon_Info> athleteList = new ArrayList<>();
+		
+		try {
+				Statement stmt = csc3610conn.createStatement();
+				ResultSet rs = stmt.executeQuery("select * from female_athletes");
+			
+			while (rs.next()) {
+				String FirstNames = rs.getString("FirstName");
+				String LastNames = rs.getString("LastName");
+				String Number = rs.getString("Number");
+				String RunTime = rs.getString("RunTime");
+				String BikeTime = rs.getString("BikeTime");
+				String SwimTime = rs.getString("SwimTime");
+				String TotalTime = rs.getString("TotalTime");
+				String Gender = rs.getString("Gender");
+				String Rank = rs.getString("Rank");
+
+				Triatholon_Info athletes = new Triatholon_Info(FirstNames,
+						LastNames, Number, RunTime, BikeTime, SwimTime,
+						TotalTime, Gender, Rank);
+				
+				athleteList.add(athletes);
+				}
+			
+				}catch(Exception ex){
+			
+				 ex.printStackTrace();	
+				}
+			return athleteList;
+}
+	
+	// Add athletes
+	public void addAthlete(Triatholon_Info athlete) throws SQLException
+		{
+	
+		PreparedStatement athleteStatement = csc3610conn.prepareStatement(" INSERT INTO emp_info (FirstNames, LastNames, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender,Rank)" + 
+		" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			athleteStatement.setString(1, athlete.getFirstNames());
+			athleteStatement.setString(2, athlete.getLastNames());
+			athleteStatement.setString(3, athlete.getNumber());
+			athleteStatement.setString(4,  athlete.getRunTime());
+			athleteStatement.setString(5, athlete.getBikeTime());
+			athleteStatement.setString(6, athlete.getSwimTime());
+			athleteStatement.setString(7, athlete.getTotalTime());
+			athleteStatement.setString(8,  athlete.getGender());
+			athleteStatement.setString(9, athlete.getRank());
+		
+			athleteStatement.executeUpdate();
+		
+	}
+		
+}
+	
+	/*
+	// Male_atheltes Method 
+	public List<Triatholon_Info> getMale_athletes() throws SQLException {
+		try (Statement stmt = csc3610conn.createStatement();
+				ResultSet rs = stmt
+						.executeQuery("select * from male_athletes")
+
+		) {
+			List<Triatholon_Info> athleteList = new ArrayList<>();
+			while (rs.next()) {// it keeps going while true
+				String FirstNames = rs.getString("FirstName");
+				String LastName = rs.getString("LastName");
+				String Number = rs.getString("Number");
+				String RunTime = rs.getString("RunTime");
+				String BikeTime = rs.getString("BikeTime");
+				String SwimTime = rs.getString("Swimtime");
+				String TotalTime = rs.getString("TotalTime");
+				String Gender = rs.getString("Gender");
+				String Rank = rs.getString("Rank");
+
+				//
+				Triatholon_Info athletes = new Triatholon_Info(FirstNames,
+						LastName, Number, RunTime, BikeTime, SwimTime,
+						TotalTime, Gender, Rank);
+				athleteList.add(athletes);
+			}
+			return athleteList;
+		}
+
+	}
+
+	public List<Triatholon_Info> getFemale_athletes() throws SQLException {
+		
+		try(Statement stmt = csc3610conn.createStatement();
+				ResultSet rs = stmt.executeQuery("select * from female_athletes")
+				){
+			List<Triatholon_Info> athleteList = new ArrayList<>();
+			while(rs.next()){
+				String FirstNames = rs.getString("FirstName");
+				String LastName = rs.getString("LastName");
+				String Number = rs.getString("Number");
+				String RunTime = rs.getString("RunTime");
+				String BikeTime = rs.getString("BikeTime");
+				String SwimTime = rs.getString("Swimtime");
+				String TotalTime = rs.getString("TotalTime");
+				String Gender = rs.getString("Gender");
+				String Rank = rs.getString("Rank");
+				
+				
+				}
+		}
+}
+**/
+			//	-------------EntryBox:
+				import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+public class Triathlon_EntryBox {
+	public static Triatholon_Info display() {
+		// Create a new Stage, set its properties
+		Stage window = new Stage();
+		window.setTitle("AU Annual Students Triathlon");
+		window.initModality(Modality.APPLICATION_MODAL);
+		window.setMinHeight(250);
+		window.setMinWidth(250);
+
+		// Create Buttons
+		Button clear = new Button("Clear");
+		Button submit = new Button("Submit");
+		// Set the action for the submit button
+		submit.setOnAction((event) -> {
+			window.close();
+		});
+
+		// VBox to hold text fields
+		VBox textFields = new VBox(10);
+
+		// Create all the text fields
+		TextField firstName = new TextField("Athlete Firest Name");
+		TextField lastName = new TextField("Athlete Last Name");
+		TextField number = new TextField("Number");
+		TextField runTime = new TextField("Run Time");		
+		TextField bikeTime = new TextField("Bike Time");
+		TextField swimTime = new TextField("Swim Time");
+		TextField totalTime = new TextField("Total Time");
+		TextField gender = new TextField("Gender");
+		TextField rank = new TextField("Rank");
+
+		// Add text fields to VBox
+		textFields.getChildren().addAll(firstName, lastName,
+				number, runTime,bikeTime, swimTime, totalTime, gender, rank);
+
+		// Set action of clear button
+		clear.setOnAction((event) -> {
+			
+			firstName.clear();
+			lastName.clear();
+			number.clear();
+			runTime.clear();
+			bikeTime.clear();
+			swimTime.clear();
+			totalTime .clear();
+			gender.clear();
+			rank.clear();
+		});
+
+		// Create VBox for buttons
+		VBox buttons = new VBox(10);
+		// Add the buttons to the VBox
+		buttons.getChildren().addAll(submit, clear);
+
+		// Create an H Box to hold our 2 VBoxes
+		HBox view = new HBox(10);
+		// Add the VBoxes
+		view.getChildren().addAll(textFields, buttons);
+
+		// Create a scene, set the H Box as the layout
+		Scene scene = new Scene(view);
+
+		// Set scene
+		window.setScene(scene);
+		// Show scene
+		window.showAndWait();
+
+		// Create a new athlete object to pass back to other class
+		Triatholon_Info newAthlete = new Triatholon_Info();
+		// Grab the text from the text fields
+		String first_name = firstName.getText();
+		String last_name = lastName.getText();
+		String num = number.getText();
+		String run_time = runTime.getText();
+		
+		String bike_time = bikeTime.getText();
+		String swim_time = swimTime.getText();
+		String total_time = totalTime.getText();
+		String gend = gender.getText();
+		String r = rank.getText();
+				
+		// Set the athletes data
+		try {
+			newAthlete.setFirstNames(first_name);
+			newAthlete.setLastNames(last_name);
+			newAthlete.setNumber(num);
+			newAthlete.setRun(run_time);
+			newAthlete.setBike(bike_time );
+			newAthlete.setSwim(swim_time);
+			newAthlete.setTotal(total_time);
+			newAthlete.setGender(gend);
+			newAthlete.setRank(r);
+			
+		} catch (Exception e) {
+			System.out.println("Error Creating Athlete, Check Your Input Information");
+		}
+
+		// return athlete object
+		return newAthlete;
+	}
+
+}
+//----------------------TableVIew:
+import java.sql.DriverManager;
+
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
+public class Triathlon_TableView extends Application {
+	private Triathlon_DBaseDriver dbaseConnection;
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		// dbaseConnection = new
+		// AU_DBaseDriver("jdbc:mysql://localhost:3306/au_staff", "root", "");
+		dbaseConnection = new Triathlon_DBaseDriver(
+				"jdbc:mysql://localhost:3306/Triatholon_Info", "root", "password");
+
+		TableView<Triatholon_Info> athleteTable = new TableView<Triatholon_Info>();
+		MenuBar menu = new MenuBar();
+		Menu menuFile = new Menu("File");
+		Menu menuEdit = new Menu("Edit");
+		Menu menuHelp = new Menu("Help");
+		MenuItem addData = new MenuItem("Data Entry");
+		MenuItem exit = new MenuItem("Exit");
+		menuFile.getItems().addAll(addData, exit);
+		menu.getMenus().addAll(menuFile, menuEdit, menuHelp);
+
+		TableColumn<Triatholon_Info, String> emp_firstNameCol = new TableColumn<Triatholon_Info, String>("First Name");
+		emp_firstNameCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("FirstNames"));
+		
+		TableColumn<Triatholon_Info, String> emp_lastName = new TableColumn<Triatholon_Info, String>("Last Name");
+		emp_lastName.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("LastNames"));
+		
+		TableColumn<Triatholon_Info, String> emp_NumberCol = new TableColumn<Triatholon_Info, String>("Number");
+		emp_NumberCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("Number"));
+		
+		TableColumn<Triatholon_Info, String> emp_runTimeCol = new TableColumn<Triatholon_Info, String>("Run Time");
+		emp_runTimeCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("RunTime"));
+
+		TableColumn<Triatholon_Info, String> emp_bikeTimeCol = new TableColumn<Triatholon_Info, String>("Bike Time");
+		emp_bikeTimeCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("BikeTime"));
+		
+		TableColumn<Triatholon_Info, String> emp_swimTimeCol = new TableColumn<Triatholon_Info, String>("Swim Time");
+		emp_swimTimeCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("SwimTime"));
+		
+		TableColumn<Triatholon_Info, String> emp_totalTimeCol = new TableColumn<Triatholon_Info, String>("Total Time");
+		emp_totalTimeCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("TotalTime"));
+		
+		TableColumn<Triatholon_Info, String> emp_genderCol = new TableColumn<Triatholon_Info, String>("Gender");
+		emp_genderCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("Gender"));
+
+		TableColumn<Triatholon_Info, String> emp_rankCol = new TableColumn<Triatholon_Info, String>("Rank");
+		emp_rankCol.setCellValueFactory(new PropertyValueFactory<Triatholon_Info, String>("Rank"));
+		
+
+		
+		
+		 
+		//athleteTable.getColumns().addAll(emp_firstNameCol, emp_lastName, emp_NumberCol, emp_runTimeCol,
+			//	emp_bikeTimeCol, emp_swimTimeCol, emp_totalTimeCol, emp_genderCol, emp_rankCol);
+
+		athleteTable.getItems().addAll(dbaseConnection.getFemaleAthleteInfo());//
+
+		BorderPane root = new BorderPane();
+		root.setCenter(athleteTable);
+		root.setTop(menu);
+		Scene scene = new Scene(root, 575, 500);
+		primaryStage.setScene(scene);
+		primaryStage.show();
+
+		addData.setOnAction(event -> {
+			Triatholon_Info newAthlete = Triathlon_EntryBox.display();
+
+			try {
+				dbaseConnection.addAthlete(newAthlete);// pass the newAthlete object from the entry box
+			} catch (Exception e) {
+				System.out.println("Error Adding Employee");
+			}
+			athleteTable.getItems().clear();
+			try {
+				athleteTable.getItems().addAll(
+						dbaseConnection.getMaleAthleteInfo());
+						//getTriatholon_Info());// same problem
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		exit.setOnAction(event -> {
+			Platform.exit();
+		});
+
+	}
+
+	public void closeDbase() throws Exception {
+
+		if (dbaseConnection != null) {
+			dbaseConnection.shutdown();
+		}
+	}
+
+	public static void main(String[] args) {
+
+		launch(args);
+	}
+
+}
+//-------------------Triatholon_Info:
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+public class Triatholon_Info {
+
+	private final StringProperty FirstNames = new SimpleStringProperty(this,
+			"FirstName");
+
+	private final StringProperty LastNames = new SimpleStringProperty(this,
+			"LastName");
+
+	private final StringProperty Number = new SimpleStringProperty(this,
+			"Number");
+
+	private final StringProperty RunTime = new SimpleStringProperty(this,
+			"RunTime");
+
+	private final StringProperty BikeTime = new SimpleStringProperty(this,
+			"BikeTime");
+
+	private final StringProperty SwimTime = new SimpleStringProperty(this,
+			"SwimTime");
+
+	private final StringProperty TotalTime = new SimpleStringProperty(this,
+			"TotalTime");
+
+	private final StringProperty Gender = new SimpleStringProperty(this,
+			"Gender");
+
+	private final StringProperty Rank = new SimpleStringProperty(this, "Rank");
+
+	public StringProperty FirstNamesProperty() {
+		return FirstNames;
+	}
+
+	public StringProperty LastNamesProperty() {
+		return LastNames;
+	}
+
+	public StringProperty NumberProperty() {
+		return Number;
+	}
+
+	public StringProperty RunProperty() {
+		return RunTime;
+	}
+
+	public StringProperty BikeProperty() {
+		return BikeTime;
+	}
+
+	public StringProperty SwimProperty() {
+		return SwimTime;
+	}
+
+	public StringProperty TotalProperty() {
+		return TotalTime;
+	}
+
+	public StringProperty GenderProperty() {
+		return Gender;
+	}
+
+	public StringProperty RankProperty() {
+		return Rank;
+	}
+
+	public final String getFirstNames() {
+		return FirstNamesProperty().get();
+	}
+
+	public final String getLastNames() {
+		return LastNamesProperty().get();
+	}
+
+	public final String getNumber() {
+		return NumberProperty().get();
+	}
+
+	public final String getRunTime() {
+		return RunProperty().get();
+	}
+
+	public final String getBikeTime() {
+		return BikeProperty().get();
+	}
+
+	public final String getSwimTime() {
+		return SwimProperty().get();
+	}
+
+	public final String getTotalTime() {
+		return TotalProperty().get();
+	}
+
+	public final String getGender() {
+		return GenderProperty().get();
+	}
+
+	public final String getRank() {
+		return RankProperty().get();
+	}
+
+	public final void setFirstNames(String fnames) {
+		FirstNamesProperty().set(fnames);
+	}
+
+	public final void setLastNames(String lnames) {
+		LastNamesProperty().set(lnames);
+	}
+
+	public final void setNumber(String number) {
+		NumberProperty().set(number);
+	}
+
+	public final void setRun(String runTime) {
+		RunProperty().set(runTime);
+	}
+
+	public final void setBike(String bikeTime) {
+		BikeProperty().set(bikeTime);
+	}
+
+	public final void setSwim(String swimTime) {
+		SwimProperty().set(swimTime);
+	}
+
+	public final void setTotal(String totalTime) {
+		TotalProperty().set(totalTime);
+	}
+
+	public final void setGender(String gender) {
+		GenderProperty().set(gender);
+	}
+
+	public final void setRank(String rank) {
+		RankProperty().set(rank);
+	}
+
+	public Triatholon_Info(String FirstNames, String LastNames, String Number, String RunTime, String BikeTime, String SwimTime, String TotalTime, String Gender, String Rank) {///---------------change method to string database contains all in strings-
+		setFirstNames(FirstNames);
+		setLastNames(LastNames);
+		setNumber(Number);
+		setRun(RunTime);
+		setBike(BikeTime);
+		setSwim(SwimTime);
+		setTotal(TotalTime);
+		setGender(Gender);
+		setRank(Rank);
+
+	}
+
+	public Triatholon_Info() {
+		
+	}
+
+}
+
+
+				
+		
+	
+
