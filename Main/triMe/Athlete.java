@@ -1,11 +1,12 @@
 package ares_kheneahm;
 
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,7 +22,6 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.Queue;
 
-import database_triatholon.Triatholon_Main;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -186,195 +186,7 @@ public class Athlete extends Application
 		return totalTimeSecond;
 	}
 	
-	public static void fillItUp(String athletes[][], int numberOfAthletes, int numberOfParameters)
-	{
-		Scanner userInput = new Scanner(System.in);
-		
-		for (int i = 0; i < numberOfAthletes; i++)
-		{
-			for (int j = 0; j < numberOfParameters; j++)
-			{
-				switch(j)
-				{
-				case 0:
-					System.out.println("Enter the Athlete's First Name: ");
-					athletes[i][j] = userInput.nextLine();
-					break;
-				case 1:
-					System.out.println("Enter the Athlete's Last Name: ");
-					athletes[i][j] = userInput.nextLine();
-					break;
-				case 2:
-					System.out.println("Enter 0 for female and 1 for male: ");
-					athletes[i][j] = userInput.nextLine();
-					if (athletes[i][j].equals("0"))
-					{
-						athletes[i][j] = "Female";
-					}
-					else if (athletes[i][j].equals("1"))
-					{
-						athletes[i][j] = "Male";
-					}
-					else
-						while ( !athletes[i][j].equals("0")  || !athletes[i][j].equals("1") )
-						{
-							System.out.println("Does not equal to 0 or 1");
-							System.out.println("Try again: ");
-							athletes[i][j] = userInput.nextLine();
-							
-							if (athletes[i][j].equals("0"))
-							{
-								athletes[i][j] = "Female";
-								break;
-							}
-							else if (athletes[i][j].equals("1"))
-							{
-								athletes[i][j] = "Male";
-								break;
-							}
-							else if (!athletes[i][j].equals("0") || !athletes[i][j].equals("1"))
-							{
-								athletes[i][j] = ""+(int)(Math.random()*10);
-							}
-						}
-					break;
-				case 3:
-					athletes[i][j] =""+ (i + (int) (Math.random() * 10));
-					break;
-				}
-			}
-		}
-		userInput.close();
-	}
-	public static void print(String athletes[][])
-	{
-		Arrays.sort(athletes);
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				System.out.print(athletes[i][j]+" ");
-			}
-			System.out.println();
-		}
-	}
-	public static void assign(int amountOfAthletes)
-	{
-		Stack<Object> athletes = new Stack<>();
-		Queue<Object> allAthleteQueue = new LinkedList<>();
-		
-		String gender = "";
-		String firstName;
-		String lastName;
-		int athleteNumber;
-		String[][] test = new String [3][8];
-		boolean truStory = true;
-		
-		for (int i = 0; i < amountOfAthletes; i++)
-		{
-			List<Object> athleteInfo = new ArrayList<>();
-			Scanner userInput = new Scanner(System.in);
-			
-			setRandomSwimTimeMinute();
-			setRandomSwimTimeSecond();
-			
-			setRandomBikeTimeMinute();
-			setRandomBikeTimeSecond();
-			
-			setRandomRunTimeMinute();
-			setRandomRunTimeSecond();
-			
-			setTotalTimeMinute((getRandomSwimTimeMinute() + getRandomBikeTimeMinute() + 
-					getRandomRunTimeMinute()), (getRandomSwimTimeSecond() + getRandomBikeTimeSecond() + 
-					getRandomRunTimeSecond()));
-			setTotalTimeSecond((getRandomSwimTimeSecond() + getRandomBikeTimeSecond() + getRandomRunTimeSecond()));
-			
-			test[i][0] = "" + Math.round((getTotalTimeMinute() + (getTotalTimeSecond()/60.0))*100)/100.0;
-			
-			System.out.println("Enter First Name: ");
-			firstName = userInput.nextLine();
-			test[i][1] = firstName;
-			athleteInfo.add(firstName);
-			
-			System.out.println("Enter Last Name: ");
-			lastName = userInput.nextLine();
-			test[i][2] = lastName;
-			athleteInfo.add(lastName);
-			
-			System.out.println("Enter Male for Male and Female for Female: ");
-			while (truStory)
-			{
-				gender =  userInput.nextLine();
-				if (gender.equalsIgnoreCase("Male"))
-				{
-					athleteInfo.add(gender);
-					test[i][3] = gender;
-					break;
-				}
-				else if (gender.equalsIgnoreCase("Female"))
-				{
-					athleteInfo.add(gender);
-					test[i][3] = gender;
-					break;
-				}
-				else
-					System.out.println("Does not Compute");
-					System.out.println("Try again: ");
-			}
-			athleteNumber = (int) (Math.random()*300);
-			athleteInfo.add(athleteNumber);
-			test[i][4] = ""+athleteNumber;
-				
-			athleteInfo.add(getRandomSwimTimeMinute() + ":" + getRandomSwimTimeSecond());
-			athleteInfo.add(getRandomBikeTimeMinute() + ":" + getRandomBikeTimeSecond());
-			athleteInfo.add(getRandomRunTimeMinute() + ":" + getRandomRunTimeSecond());
-			athleteInfo.add(getTotalTimeMinute() + ":" + getTotalTimeSecond());
-			
-			athletes.add(athleteInfo);
-			allAthleteQueue.add(athleteInfo);
-			
-			userInput.close();
-		}
-				
-		Iterator<Object> itQueue = allAthleteQueue.iterator();
-		Iterator<Object> itStack = athletes.iterator();
-		
-		System.out.println("Queue Iterator: ");
-		while (itQueue.hasNext())
-		{
-			System.out.println(itQueue.next());
-		}
-		
-		System.out.println("\nStack Iterator: ");
-		while (itStack.hasNext())
-		{
-			System.out.println(itStack.next());
-		}
-		
-		for (int j = 0; j < amountOfAthletes; j++)
-		{
-			Arrays.sort(test, new Comparator<String[]>() 
-			{
-				@Override
-				public int compare(String[] one, String[] two)
-				{
-					String time1 = one[0];
-					String time2 = two[0];
-					
-					return time1.compareTo(time2);
-				}
-			});
-		}
-			
-		System.out.println("\nString: ");
-		for (String[] ob: test)
-		{
-			setHours(Double.parseDouble(ob[0]));
-			setMinutes(Double.parseDouble(ob[0]));
-			setSeconds(Double.parseDouble(ob[0]));
-			System.out.println( getHours()+ ":" + getMinutes() + ":" + getSeconds() + " " + ob[1] + " " + ob[2] + " " + ob[3] + " " + ob[4]);
-		}
-	}
+
 	/*
 	 * The reason for this method being here is because initially when you initialize an array
 	 * all of the elements are either null or zero depending on the type of the array. In this
@@ -393,7 +205,7 @@ public class Athlete extends Application
 		}
 	}
 	//This method populates the Array with random integers that are not already apart of the array.
-	public static void populatingArrayWithNoDuplicates(int[] theArray)
+	public static void populatingArrayWithNoDuplicates(int[] theArray) throws SQLException
 	{
 		for (int i = 0; i < (theArray.length); i++)
 		{
@@ -401,18 +213,28 @@ public class Athlete extends Application
 		}
 	}
 	//This returns a random integer that is not in the array
-	public static int checkingDuplicatesInArray(int[] theArray)
+	public static int checkingDuplicatesInArray(int[] theArray) throws SQLException
 	{
+		int[] athleteNumbersFromDatabase = getAthleteNumbersFromDatabase();
 		int random;
 		int loopItAgain; //determines if there is a duplicate number greater than 0
 		
 		while (true)
 	        {
-	            random = (int) (Math.random()*20);
+			
+	            random = (int) (Math.random()*2000 + 10);
 	            loopItAgain = 0;
-	            for (int i = 0; i < (theArray.length); i++)
+	            for (int i = 0; i < (athleteNumbersFromDatabase.length); i++)
 	            {
-	            	if (random == theArray[i])
+	            	if (i < theArray.length)
+	            	{
+	            		if (random == theArray[i])
+		            	{
+		            		loopItAgain++;
+		            	}
+	            	}
+	            	
+	            	if (random == athleteNumbersFromDatabase[i])
 	            	{
 	            		loopItAgain++;
 	            	}
@@ -423,6 +245,51 @@ public class Athlete extends Application
 	                return random;
 	            }
 	        }
+	}
+	public static int[] getAthleteNumbersFromDatabase() throws SQLException
+	{
+		Set<Integer> nmm = new HashSet<Integer>();
+		int arrg[];//= new int[5000]; //The Reason why this is so high is to make sure i
+		int i = 0;
+		
+		Connection csc3610conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ath_info", "root", "password");
+		
+		String query = "select * from female_ath;";
+		Statement stmt = csc3610conn.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		
+		//Gets the female Athlete Numbers
+		while (rs.next())
+		{	
+			//arrg[i] = rs.getInt("Number");
+			nmm.add(rs.getInt("Number"));
+			i++;
+		}
+		
+		query = "select * from male_ath;";
+		rs = stmt.executeQuery(query);
+		
+		//Gets the male Athlete Numbers
+		while (rs.next())
+		{
+			//arrg[i] = rs.getInt("Number");
+			nmm.add(rs.getInt("Number"));
+			i++;
+		}
+		
+		stmt.close();
+		
+		Iterator<Integer> itIt = nmm.iterator();
+		//arrg[] = new int[nmm.size()];
+		arrg = new int[nmm.size()];
+		i = 0;
+		while (itIt.hasNext())
+		{
+			arrg[i] = (int) itIt.next();
+		}
+		
+		
+		return arrg;
 	}
 	/* 
 	 * This is the assign method revised. I didn't bother removing the original assign method because it is good to keep
@@ -617,6 +484,7 @@ public class Athlete extends Application
 		for (int i = 0; i < amountOfAthletes; i++)
 		{
 			double swimTime, bikeTime, runTime, totalTime;
+			double swimSplit, bikeSplit, runSplit;
 			//If the athlete is not already disqualified then it will not calculate the data
 			//You cannot calculate a String
 			if (runningTimes.get(athleteNumbers[i]).equals(100.0))
@@ -638,42 +506,77 @@ public class Athlete extends Application
 				if (swimmingTimesMale.containsKey(athleteNumbers[i])) //Calculates the times for the males
 				{
 					swimTime = (swimmingTimesMale.get(athleteNumbers[i]));
+					swimSplit = (swimmingTimesMale.get(athleteNumbers[i])/20); //200 meter swim
 					bikeTime = (bikingTimesMale.get(athleteNumbers[i]));
+					bikeSplit = (bikingTimesMale.get(athleteNumbers[i])/40); //40km bike ride
 					runTime = (runningTimesMale.get(athleteNumbers[i]));
+					runSplit = (runningTimesMale.get(athleteNumbers[i])/ 10); //10km run
 					totalTime = Math.round((100) * (swimTime + bikeTime + runTime))/100.0;;
 					totalMales.put(athleteNumbers[i], totalTime);
 				}
 				else if (swimmingTimesFemale.containsKey(athleteNumbers[i])) //Calculates the times for the females
 				{
 					swimTime = (swimmingTimesFemale.get(athleteNumbers[i]));
+					swimSplit = (swimmingTimesFemale.get(athleteNumbers[i])/20); //200 meter swim
 					bikeTime = (bikingTimesFemale.get(athleteNumbers[i]));
+					bikeSplit = (bikingTimesFemale.get(athleteNumbers[i])/40); //40km bike ride
 					runTime = (runningTimesFemale.get(athleteNumbers[i]));
+					runSplit = (runningTimesFemale.get(athleteNumbers[i])/ 10); //10km run
 					totalTime = Math.round((100) * (swimTime + bikeTime + runTime))/100.0;;
 					totalFemales.put(athleteNumbers[i], totalTime);
 				}
 			}
 		}
 	}
-	public static void printAllAthletes(Map<Integer, Double> athletesTotalTime, Map<Integer, String> firstNames, Map<Integer, String> lastNames, 
+	public static void insertTopAthlete(Map<Integer, Double> athletesTotalTime, Map<Integer, String> firstNames, Map<Integer, String> lastNames, 
 			Map<Integer, String> genders, Map<Integer, Double> swimmingTimes, Map<Integer, Double> bikingTimes, Map<Integer, Double> runningTimes, 
-			int[] gs, int zero)
+			int[] correctedAthleteNumbers, int zero) throws SQLException
 	{
+		Connection csc3610conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ath_info", "root", "password");
 		if (athletesTotalTime.size() >= 1)
 		{
-			if (swimmingTimes.get(gs[0]) >= 60 || bikingTimes.get(gs[0]) >= 60 || runningTimes.get(gs[0]) >= 60)
+			if (swimmingTimes.get(correctedAthleteNumbers[0]) >= 60 || bikingTimes.get(correctedAthleteNumbers[0]) >= 60 || runningTimes.get(correctedAthleteNumbers[0]) >= 60)
 			{
-				System.out.println("All " + genders.get(gs[0]) + " are disqualified");
+				System.out.println("All " + genders.get(correctedAthleteNumbers[0]) + " are disqualified");
 			}
 			else
 			{			
-				System.out.println("First Name: " + firstNames.get(gs[0]) + " Last Name: " + lastNames.get(gs[0]) + " Gender: " + genders.get(gs[0]) + 
-						" Athlete Number: " + gs[0] + " Swimming: " + 
-				change(swimmingTimes.get(gs[0])) + " Biking: " + change(bikingTimes.get(gs[0])) + " Running: " + 
-						change(runningTimes.get(gs[0])) + " Total: " + change(athletesTotalTime.get(gs[0])));
+				if (genders.get(correctedAthleteNumbers[0]).equalsIgnoreCase("Male")) {
+					String query = "INSERT INTO topmale_athlete (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
+							"Values(?,?,?,?,?,?,?,?)";
+					PreparedStatement stmt = csc3610conn.prepareStatement(query);
+					stmt.setString(1, firstNames.get(correctedAthleteNumbers[0]));
+					stmt.setString(2, lastNames.get(correctedAthleteNumbers[0]));
+					stmt.setLong(3, correctedAthleteNumbers[0]);
+					stmt.setString(4, change(runningTimes.get(correctedAthleteNumbers[0])));
+					stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[0])));
+					stmt.setString(6, change(swimmingTimes.get(correctedAthleteNumbers[0])));
+					stmt.setString(7, change(athletesTotalTime.get(correctedAthleteNumbers[0])));
+					stmt.setString(8, "Male");
+			
+					stmt.execute();
+					
+
+					}
+					if (genders.get(correctedAthleteNumbers[0]).equalsIgnoreCase("Female")) {
+						String query = "INSERT INTO topfemale_athlete (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
+								"Values(?,?,?,?,?,?,?,?)";
+						PreparedStatement stmt = csc3610conn.prepareStatement(query);
+						stmt.setString(1, firstNames.get(correctedAthleteNumbers[0]));
+						stmt.setString(2, lastNames.get(correctedAthleteNumbers[0]));
+						stmt.setLong(3, correctedAthleteNumbers[0]);
+						stmt.setString(4, change(runningTimes.get(correctedAthleteNumbers[0])));
+						stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[0])));
+						stmt.setString(6, change(swimmingTimes.get(correctedAthleteNumbers[0])));
+						stmt.setString(7, change(athletesTotalTime.get(correctedAthleteNumbers[0])));
+						stmt.setString(8, "Female");
+						
+						stmt.execute();
+
+					}
 			}
 		}
-		else
-			System.out.println("No " + genders.get(gs[0]) + " athletes entered");
+
 		
 	}
 	//Prints the data
@@ -716,12 +619,13 @@ public class Athlete extends Application
 	public static void main(String[] args) throws SQLException
 	{
 		Scanner userInput = new Scanner(System.in);
-		
+		//getAthleteNumbersFromDatabase();
 		System.out.print("How much athletes will there be: ");
 		
 		int amountOfAthletes = userInput.nextInt(); //You can change the amount of athletes here.
 		int[] athleteNumbers = new int[amountOfAthletes]; //Empty athlete numbers
 		int[] correctedAthleteNumbers = new int[amountOfAthletes];
+		//int[] athleteNumbersFromDatabase;
 		
 		
 		//Creating Map Objects
@@ -760,14 +664,7 @@ public class Athlete extends Application
 		total = new HashMap<Integer, Double>();
 		totalMales = new HashMap<Integer, Double>();
 		totalFemales = new HashMap<Integer, Double>();
-		
-		//Old
-		//fillItUp(athletes, numberOfAthletes, dataEntries);
-		//Old
-		//print(athletes);
-		
-		//Old assign method
-		//assign(3);
+
 		removingZeros(athleteNumbers); //Removes the zeros of the array
 		populatingArrayWithNoDuplicates(athleteNumbers); //Populate the array with random numbers
 		
@@ -824,21 +721,13 @@ public class Athlete extends Application
 		sortedTotalMale = swap(totalMales, sortedTotalMale, athleteNumbers, correctedAthleteNumbersMale);
 		sortedTotalFemale = swap(totalFemales, sortedTotalFemale, athleteNumbers, correctedAthleteNumbersFemale);
 		
-
+		if (amountOfAthletes >= 1) {
 		printAllAthletes(sortedTotal, firstNames, lastNames, genders, swimmingTimes, bikingTimes, runningTimes, correctedAthleteNumbers);
 		
-//		System.out.println("\nTop Male: ");
-//		printAllAthletes(sortedTotalMale, firstNamesMale, lastNamesMale, gendersMale, swimmingTimesMale, bikingTimesMale, runningTimesMale, correctedAthleteNumbersMale, 0);
-//		
-//		System.out.println("\nTop Female: ");
-//		printAllAthletes(sortedTotalFemale, firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimesFemale, bikingTimesFemale, runningTimesFemale, correctedAthleteNumbersFemale, 0);
-		
-		
 		insertAllAthletes(sortedTotal, firstNames, lastNames, genders, swimmingTimes, bikingTimes, runningTimes, correctedAthleteNumbers);
-//		insertAllAthletes(sortedTotalFemale, firstNamesFemale, lastNamesFemale, gendersFemale, swimmingTimesFemale, bikingTimesFemale, runningTimesFemale, correctedAthleteNumbersFemale, 0);
-
 		
 		launch(args);
+		}
 	}
 
 	private static void insertAllAthletes(Map<Integer, Double> sortedTotalTime,
@@ -848,7 +737,7 @@ public class Athlete extends Application
 			Map<Integer, Double> swimmingTimes,
 			Map<Integer, Double> bikingTimes,
 			Map<Integer, Double> runningTimes,
-			int[] correctedAthleteNumbers) throws SQLException {
+			int[] correctedAthleteNumbers) throws SQLException  {
 		
 		Connection csc3610conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ath_info", "root", "password");
 		for (int j = 0; j < (sortedTotalTime.size()); j++) {
@@ -857,77 +746,89 @@ public class Athlete extends Application
 			if (swimmingTimes.get(correctedAthleteNumbers[j]) >= 60 || bikingTimes.get(correctedAthleteNumbers[j]) >= 60 || runningTimes.get(correctedAthleteNumbers[j]) >= 60)
 			{
 				if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Male")) {
-				String query = "INSERT INTO male_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
-						"Values(?,?,?,?,?,?,?,?)";
+				String query = "INSERT INTO male_ath (Number, FirstName, LastName, RunTime, RunSpeed, BikeTime, BikeSpeed, SwimTime, SwimSpeed, TotalTime, Gender)" +
+						"Values(?,?,?,?,?,?,?,?,?,?,?)";
 				PreparedStatement stmt = csc3610conn.prepareStatement(query);
-				stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
-				stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
-				stmt.setLong(3, correctedAthleteNumbers[j]);
+				stmt.setLong(1, correctedAthleteNumbers[j]);
+				stmt.setString(2, firstNames.get(correctedAthleteNumbers[j]));
+				stmt.setString(3, lastNames.get(correctedAthleteNumbers[j]));
 				stmt.setString(4, "Disqualified");
 				stmt.setString(5, "Disqualified");
 				stmt.setString(6, "Disqualified");
-				stmt.setString(6, "Disqualified");
-				stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
+				stmt.setString(7, "Disqualified");
+				stmt.setString(8, "Disqualified");
+				stmt.setString(9, "Disqualified");
+				stmt.setString(10, "Disqualified");
+				stmt.setString(11, "Male");
+				
+				stmt.execute();
 				}
 				if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Female")) {
-					String query = "INSERT INTO female_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
-							"Values(?,?,?,?,?,?,?,?)";
+					String query = "INSERT INTO female_ath (Number, FirstName, LastName, RunTime, RunSpeed, BikeTime, BikeSpeed, SwimTime, SwimSpeed, TotalTime, Gender)" +
+							"Values(?,?,?,?,?,?,?,?,?,?,?)";
 					PreparedStatement stmt = csc3610conn.prepareStatement(query);
-					stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
-					stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
-					stmt.setLong(3, correctedAthleteNumbers[j]);
+					stmt.setLong(1, correctedAthleteNumbers[j]);
+					stmt.setString(2, firstNames.get(correctedAthleteNumbers[j]));
+					stmt.setString(3, lastNames.get(correctedAthleteNumbers[j]));
 					stmt.setString(4, "Disqualified");
 					stmt.setString(5, "Disqualified");
 					stmt.setString(6, "Disqualified");
-					stmt.setString(6, "Disqualified");
-					stmt.setString(8, genders.get(correctedAthleteNumbers[j]));
+					stmt.setString(7, "Disqualified");
+					stmt.setString(8, "Disqualified");
+					stmt.setString(9, "Disqualified");
+					stmt.setString(10, "Disqualified");
+					stmt.setString(11, "Female");
+				
+					stmt.execute();
 				}
 
 				}
 			else
 			{			
 				if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Male")) {
-				String query = "INSERT INTO male_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
-						"Values(?,?,?,?,?,?,?,?)";
+				String query = "INSERT INTO male_ath (Number, FirstName, LastName, RunTime, RunSpeed, BikeTime, BikeSpeed, SwimTime, SwimSpeed, TotalTime, Gender)" +
+							"Values(?,?,?,?,?,?,?,?,?,?,?)";
 				PreparedStatement stmt = csc3610conn.prepareStatement(query);
-				stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
-				stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
-				stmt.setLong(3, correctedAthleteNumbers[j]);
+				stmt.setLong(1, correctedAthleteNumbers[j]);
+				stmt.setString(2, firstNames.get(correctedAthleteNumbers[j]));
+				stmt.setString(3, lastNames.get(correctedAthleteNumbers[j]));
 				stmt.setString(4, change(runningTimes.get(correctedAthleteNumbers[j])));
-				stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[j])));
-				stmt.setString(6, change(swimmingTimes.get(correctedAthleteNumbers[j])));
-				stmt.setString(7, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
-				stmt.setString(8, "Male");
+				stmt.setString(5, change(runningTimes.get(correctedAthleteNumbers[j])/10)); 
+				stmt.setString(6, change(bikingTimes.get(correctedAthleteNumbers[j])));
+				stmt.setString(7, change(bikingTimes.get(correctedAthleteNumbers[j])/40));
+				stmt.setString(8, change(swimmingTimes.get(correctedAthleteNumbers[j])));
+				stmt.setString(9, change(swimmingTimes.get(correctedAthleteNumbers[j])/20));
+				stmt.setString(10, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
+				stmt.setString(11, "Male");
 		
 				stmt.execute();
 				
 
 				}
 				if (genders.get(correctedAthleteNumbers[j]).equalsIgnoreCase("Female")) {
-					String query = "INSERT INTO female_info (FirstName, LastName, Number, RunTime, BikeTime, SwimTime, TotalTime, Gender)" +
-							"Values(?,?,?,?,?,?,?,?)";
+					String query = "INSERT INTO female_ath (Number, FirstName, LastName, RunTime, RunSpeed, BikeTime, BikeSpeed, SwimTime, SwimSpeed, TotalTime, Gender)" +
+							"Values(?,?,?,?,?,?,?,?,?,?,?)";
 					PreparedStatement stmt = csc3610conn.prepareStatement(query);
-					stmt.setString(1, firstNames.get(correctedAthleteNumbers[j]));
-					stmt.setString(2, lastNames.get(correctedAthleteNumbers[j]));
-					stmt.setLong(3, correctedAthleteNumbers[j]);
+					stmt.setLong(1, correctedAthleteNumbers[j]);
+					stmt.setString(2, firstNames.get(correctedAthleteNumbers[j]));
+					stmt.setString(3, lastNames.get(correctedAthleteNumbers[j]));
 					stmt.setString(4, change(runningTimes.get(correctedAthleteNumbers[j])));
-					stmt.setString(5, change(bikingTimes.get(correctedAthleteNumbers[j])));
-					stmt.setString(6, change(swimmingTimes.get(correctedAthleteNumbers[j])));
-					stmt.setString(7, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
-					stmt.setString(8, "Female");
+					stmt.setString(5, change(runningTimes.get(correctedAthleteNumbers[j])/10)); 
+					stmt.setString(6, change(bikingTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(7, change(bikingTimes.get(correctedAthleteNumbers[j])/40));
+					stmt.setString(8, change(swimmingTimes.get(correctedAthleteNumbers[j])));
+					stmt.setString(9, change(swimmingTimes.get(correctedAthleteNumbers[j])/20));
+					stmt.setString(10, change(sortedTotalTime.get(correctedAthleteNumbers[j])));
+					stmt.setString(11, "Female");
 					
 					stmt.execute();
-
+				}
+				
 				}
 					
 			}
 		}
 		}
-		
-	}
-		
-		
-
 		
 	
 	private static Map<Integer, Double> sortMap(Map<Integer, Double> unsorted)
@@ -956,7 +857,6 @@ public class Athlete extends Application
 	}
 	public static Map<Integer, Double>swap(Map<Integer,Double> unsorted, Map<Integer, Double> sorted, int array[], int[] arIn)
 	{
-		
 		List<Map.Entry<Integer, Double>> lisp = new ArrayList<Map.Entry<Integer, Double>>(sorted.entrySet());
 		
 		int i = 0;
@@ -1074,3 +974,4 @@ public class Athlete extends Application
 	}
 	
 }
+
