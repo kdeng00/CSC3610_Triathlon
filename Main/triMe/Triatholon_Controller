@@ -1,80 +1,486 @@
+package ares_kheneahm;
+
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
-public class Triatholon_Controller {
+public class Triatholon_Controller extends Database_Controller{
 	
 	@FXML
-	private MenuItem menuClose;
+	private Button updateAthMain;
+	@FXML
+	private Button deleteAthMain;
+	
+	@FXML
+	private TextField addFName;
+	@FXML
+	private TextField addLName;
+	@FXML
+	private TextField addBikeHour;
+	@FXML
+	private TextField addBikeMin;
+	@FXML
+	private TextField addBikeSecs;
+	@FXML
+	private TextField addRunHour;
+	@FXML
+	private TextField addRunMin;
+	@FXML
+	private TextField addRunSecs;
+	@FXML
+	private TextField addSwimHour;
+	@FXML
+	private TextField addSwimMin;
+	@FXML
+	private TextField addSwimSecs;
+	@FXML
+	private ComboBox addGender;
+	@FXML
+	private Button clrBtn;
+	@FXML
+	private Button addBtn;
+	@FXML
+	private Button addAthlete;
+	@FXML
+	private Button deleteAthlete;
+	@FXML
+	private Button updateAthInfo;
+	
+	//delete window nodes
+	@FXML 
+	private TextField delAthNum;
+	@FXML
+	private Text txtDelError;
+	@FXML
+	private ComboBox<?> delGender;
+	@FXML
+	private Button deleteBtn;
+	@FXML
+	private Button delClrBtn;
+	
+	//adding athlete window nodes
+	
+	
+	
+	//updating athlete nodes
+	@FXML
+	private Button numNext;
+	@FXML
+	private TextField updateAthCheck;
+	@FXML
+	private Text athNotText;
+	
+	@FXML
+	private Button updateAthNum;
+	
+	@FXML
+	private MenuItem menuUpdate;
 	@FXML
 	private Label maleWinner;
 	@FXML 
 	private Label femaleWinner;
+	
+	
+	private BorderPane rootLayout;
+	private AnchorPane controlData;
+	
+	@FXML
+	private MenuItem menuClose;
 	@FXML
 	private TableView<Triatholon_Info> tblMale;
 	@FXML
 	private TableView<Triatholon_Info> tblFemale;
 	@FXML
-	private TableColumn<Triatholon_Info, String> rankMale;
+	private TableColumn<Triatholon_Info, String> placeMale;
 	@FXML
-	private TableColumn<Triatholon_Info, String> nameFirstMale;
+	private TableColumn<Triatholon_Info, String> numberMale;
 	@FXML
-	private TableColumn<Triatholon_Info, String> nameLastMale;
+	private TableColumn<Triatholon_Info, String> firstNameMale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> lastNameMale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> runTimeMale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> runSpeedMale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> swimTimeMale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> swimSpeedMale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> bikeTimeMale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> bikeSpeedMale;
 	@FXML
 	private TableColumn<Triatholon_Info, String> totalTimeMale;
 	@FXML
-	private TableColumn<Triatholon_Info, String> rankFemale;
+	private TableColumn<Triatholon_Info, String> placeFemale;
 	@FXML
-	private TableColumn<Triatholon_Info, String> nameFirstFemale;
+	private TableColumn<Triatholon_Info, String> numberFemale;
 	@FXML
-	private TableColumn<Triatholon_Info, String> nameLastFemale;
+	private TableColumn<Triatholon_Info, String> firstNameFemale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> lastNameFemale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> runTimeFemale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> runSpeedFemale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> swimTimeFemale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> swimSpeedFemale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> bikeTimeFemale;
+	@FXML
+	private TableColumn<Triatholon_Info, String> bikeSpeedFemale;
 	@FXML
 	private TableColumn<Triatholon_Info, String> totalTimeFemale;
 	
 	
 	private Triatholon_DBaseDriver dbaseConnection;
+	private Statement stmt;
 
-	private BorderPane rootLayout;
-	private AnchorPane controlData;
+
 	
 	public Triatholon_Controller() throws IOException{
 		
 	}
-	
-	public void initialize() throws Exception {
 		
+	
+	public void populateDatabase() throws Exception{
+		
+		tblMale.getItems().clear();
+		tblFemale.getItems().clear();
 		dbaseConnection = new Triatholon_DBaseDriver("jdbc:mysql://localhost:3306/ath_info", "root", "password");
 
-//		rankMale.setCellValueFactory(new PropertyValueFactory<>("Rank"));
-		nameFirstMale.setCellValueFactory(new PropertyValueFactory<>("FirstNames"));
-		nameLastMale.setCellValueFactory(new PropertyValueFactory<>("LastNames"));
+		placeMale.setCellValueFactory(new PropertyValueFactory<>("Place"));
+		numberMale.setCellValueFactory(new PropertyValueFactory<>("Number"));
+		firstNameMale.setCellValueFactory(new PropertyValueFactory<>("FirstNames"));
+		lastNameMale.setCellValueFactory(new PropertyValueFactory<>("LastNames"));
+		runTimeMale.setCellValueFactory(new PropertyValueFactory<>("RunTime"));
+		runSpeedMale.setCellValueFactory(new PropertyValueFactory<>("RunSpeed"));
+		swimTimeMale.setCellValueFactory(new PropertyValueFactory<>("SwimTime"));
+		swimSpeedMale.setCellValueFactory(new PropertyValueFactory<>("SwimSpeed"));
+		bikeTimeMale.setCellValueFactory(new PropertyValueFactory<>("BikeTime"));
+		bikeSpeedMale.setCellValueFactory(new PropertyValueFactory<>("BikeSpeed"));
 		totalTimeMale.setCellValueFactory(new PropertyValueFactory<>("TotalTime"));
 		
 		
 		tblMale.getItems().addAll(dbaseConnection.getMaleAthleteInfo());
 		
-//		rankFemale.setCellValueFactory(new PropertyValueFactory<>("Rank"));
-		nameFirstFemale.setCellValueFactory(new PropertyValueFactory<>("FirstNames"));
-		nameLastFemale.setCellValueFactory(new PropertyValueFactory<>("LastNames"));
+		
+		placeFemale.setCellValueFactory(new PropertyValueFactory<>("Place"));
+		numberFemale.setCellValueFactory(new PropertyValueFactory<>("Number"));
+		firstNameFemale.setCellValueFactory(new PropertyValueFactory<>("FirstNames"));
+		lastNameFemale.setCellValueFactory(new PropertyValueFactory<>("LastNames"));
+		runTimeFemale.setCellValueFactory(new PropertyValueFactory<>("RunTime"));
+		runSpeedFemale.setCellValueFactory(new PropertyValueFactory<>("RunSpeed"));
+		swimTimeFemale.setCellValueFactory(new PropertyValueFactory<>("SwimTime"));
+		swimSpeedFemale.setCellValueFactory(new PropertyValueFactory<>("SwimSpeed"));
+		bikeTimeFemale.setCellValueFactory(new PropertyValueFactory<>("BikeTime"));
+		bikeSpeedFemale.setCellValueFactory(new PropertyValueFactory<>("BikeSpeed"));
 		totalTimeFemale.setCellValueFactory(new PropertyValueFactory<>("TotalTime"));
 		
 		
 		tblFemale.getItems().addAll(dbaseConnection.getFemaleAthleteInfo());
 		
+		
 		menuClose.setOnAction((e) -> {
 			System.exit(0);
 		});
-		
-		
-		
+
 		
 	}
 
+	public void updateView() throws Exception{
+		menuUpdate.setOnAction((e)-> {
+
+    	FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Athlete.class.getResource("RootLayout.fxml"));
+        try {
+            rootLayout = (BorderPane)loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Enter Data");
+            stage.setScene(new Scene(rootLayout, 500, 150));
+            stage.show();
+
+
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        }
+        
+        FXMLLoader load = new FXMLLoader();
+		load.setLocation(Athlete.class.getResource("ControlEntry.fxml"));
+		
+		try {
+			controlData = (AnchorPane)load.load();
+		}
+		catch (IOException exc) {
+			exc.printStackTrace();
+		}
+		rootLayout.setCenter(controlData); 
+    
+});
+		
+	}
+	
+	public void addDatabaseInfo() throws Exception {
+		addAthlete.setOnAction((e)-> {
+
+	    	FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Athlete.class.getResource("RootLayout.fxml"));
+	        try {
+	            rootLayout = (BorderPane)loader.load();
+	            Stage stage = new Stage();
+	            stage.setTitle("Enter Data");
+	            stage.setScene(new Scene(rootLayout, 350, 500));
+	            stage.show();
+
+
+	        } catch (IOException exc) {
+	            exc.printStackTrace();
+	        }
+	        
+	        FXMLLoader load = new FXMLLoader();
+			load.setLocation(Athlete.class.getResource("ControlUpdate.fxml"));
+			
+			try {
+				controlData = (AnchorPane)load.load();
+			}
+			catch (IOException exc) {
+				exc.printStackTrace();
+			}
+			rootLayout.setCenter(controlData); 
+		});
+		
+		
+	}
+	public void deleteDatabaseInfo() throws Exception {
+		deleteAthMain.setOnAction((e)-> {
+
+	    	FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Athlete.class.getResource("RootLayout.fxml"));
+	        try {
+	            rootLayout = (BorderPane)loader.load();
+	            Stage stage = new Stage();
+	            stage.setTitle("Enter Data");
+	            stage.setScene(new Scene(rootLayout, 500, 200));
+	            stage.show();
+
+
+	        } catch (IOException exc) {
+	            exc.printStackTrace();
+	        }
+	        
+	        FXMLLoader load = new FXMLLoader();
+			load.setLocation(Athlete.class.getResource("ControlDelete.fxml"));
+			
+			try {
+				controlData = (AnchorPane)load.load();
+			}
+			catch (IOException exc) {
+				exc.printStackTrace();
+			}
+			rootLayout.setCenter(controlData); 
+		});
+		
+		
+	}
+	public void updateDatabaseInfo() throws Exception {
+//		updateAthInfo.setOnAction((e)-> {
+			updateAthMain.setOnAction((e)-> {
+
+	    	FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Athlete.class.getResource("RootUpdate.fxml"));
+	        try {
+	            rootLayout = (BorderPane)loader.load();
+	            Stage stage = new Stage();
+	            stage.setTitle("Enter Data");
+	            stage.setScene(new Scene(rootLayout, 500, 100));
+	            stage.show();
+
+
+	        } catch (IOException exc) {
+	            exc.printStackTrace();
+	        }
+	        
+	        FXMLLoader load = new FXMLLoader();
+			load.setLocation(Athlete.class.getResource("ControlUpdateAthNumCheck.fxml"));
+			
+			try {
+				controlData = (AnchorPane)load.load();
+			}
+			catch (IOException exc) {
+				exc.printStackTrace();
+			}
+			rootLayout.setCenter(controlData); 
+		});
+		
+		
+	}
+	
+	public void deletingAthlete() throws SQLException {
+		
+		
+		deleteBtn.setOnAction((e)-> {
+//		deleteAthMain.setOnAction((e)-> {
+			Connection csc3610conn = null;
+			try {
+		csc3610conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ath_info", "root", "password");
+	} catch (Exception e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+
+		String athNum = delAthNum.getText();
+		String queryCheck = "Select * from male_info where Number = ?" ;
+		PreparedStatement stmt = null;
+
+		
+		String queryCheck2 = "Select * from female_info where Number = ?" ;
+		PreparedStatement stmt2 = null;
+		try {
+			stmt = csc3610conn.prepareStatement(queryCheck);
+			stmt.setString(1, athNum);
+			
+			stmt2 = csc3610conn.prepareStatement(queryCheck2);
+			stmt2.setString(1, athNum);
+
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			
+			ResultSet rs = stmt.executeQuery();
+			ResultSet rs2 = stmt2.executeQuery();
+			boolean foundMale = rs.next();
+			boolean foundFemale = rs2.next();
+			if (!rs.next() && !rs2.next() ){
+				txtDelError.setOpacity(1);
+				
+			}
+			if(foundMale || foundFemale) {
+		 
+				if(delGender.getValue() == "Male") {
+					String queryCheck3 = "delete from male_ath where Number = ?";
+					PreparedStatement stmt3 = csc3610conn.prepareStatement(queryCheck3);
+					stmt2.setString(1, athNum);
+					stmt2.executeQuery();
+					}
+				
+				else {
+		
+					String queryCheck3 = "delete from female_ath where Number = ?";
+					PreparedStatement stmt3 = csc3610conn.prepareStatement(queryCheck3);
+					stmt2.setString(1, athNum);
+					stmt2.executeQuery();
+					
+				}
+			}
+		}
+		 catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		});
+	}
+	
+	public void updatingAthleteInfo() throws SQLException {
+		 numNext.setOnAction((e)-> {
+		
+		Connection csc3610conn = null;
+		try {
+			csc3610conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ath_info", "root", "password");
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+}
+		String athNum = updateAthCheck.getText();
+		
+		String queryCheck = "Select * from male_info where Number = ?";
+		PreparedStatement stmt = null;
+
+		
+		String queryCheck2 = "Select * from female_info where Number = ?";
+		PreparedStatement stmt2 = null;
+		try {
+			stmt = csc3610conn.prepareStatement(queryCheck);
+			stmt.setString(1, athNum);
+			
+			stmt2 = csc3610conn.prepareStatement(queryCheck2);
+			stmt2.setString(1, athNum);
+
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {	
+		ResultSet rs = stmt.executeQuery();
+		ResultSet rs2 = stmt2.executeQuery();
+		boolean foundMale = rs.next();
+		boolean foundFemale = rs2.next();
+		if (!foundMale && !foundFemale ){
+			athNotText.setOpacity(1);
+			
+		}
+		else {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(Athlete.class.getResource("RootLayout.fxml"));
+		        try {
+		            rootLayout = (BorderPane)loader.load();
+		            Stage stage = new Stage();
+		            stage.setTitle("Enter Data");
+		            stage.setScene(new Scene(rootLayout, 350, 500));
+		            stage.show();
+
+
+		        } catch (IOException exec) {
+		            exec.printStackTrace();
+		        }
+		        
+		        FXMLLoader load = new FXMLLoader();
+				load.setLocation(Athlete.class.getResource("ControlUpdateAth.fxml"));
+				
+				try {
+					controlData = (AnchorPane)load.load();
+				}
+				catch (IOException exec) {
+					exec.printStackTrace();
+				}
+				rootLayout.setCenter(controlData);
+			
+			
+		}
+		}
+		catch (Exception exc1) {
+			exc1.printStackTrace();
+		}
+
+		
+		
+	
+	});
+	}
 }
